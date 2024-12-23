@@ -1,5 +1,5 @@
 [build]
-  publish = "dist"
+  publish = "dist"  # Using dist as the publish directory since that's where our static files are
 
 # Redirect rule for SPA
 [[redirects]]
