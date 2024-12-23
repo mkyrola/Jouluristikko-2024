@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Seemoto Jouluristikko 2024</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=2024">
+</head>
+<body>
+    <div class="container">
+        <h1 class="invisible">Seemoto Jouluristikko 2024</h1>
+        
+        <div class="puzzle-container">
+            <img src="{{ url_for('serve_image', filename='image.jpg') }}?v=2024" alt="Puzzle Background" class="puzzle-image">
+            <div id="crossword-grid" class="crossword-grid">
+                <!-- Grid will be populated by JavaScript -->
+            </div>
+            <div class="controls">
+                <button id="instructions-button">Ohjeet</button>
+                <button id="check-button">Tarkista ristikko</button>
+                <button id="check-solution-button">Tarkista ratkaisusana</button>
+                <button id="clear-button">Tyhjennä ristikko</button>
+                <button id="submit-button">Lähetä vastaus</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}?v=2024"></script>
+</body>
+</html>

@@ -1,0 +1,1433 @@
+{
+  "words": [
+    {
+      "wordindex": 1,
+      "startX": 0,
+      "startY": 11,
+      "length": 4,
+      "direction": "across",
+      "answer": "ASKO"
+    },
+    {
+      "wordindex": 2,
+      "startX": 5,
+      "startY": 11,
+      "length": 5,
+      "direction": "across",
+      "answer": "TASAN"
+    },
+    {
+      "wordindex": 3,
+      "startX": 0,
+      "startY": 11,
+      "length": 6,
+      "direction": "down",
+      "answer": "ALAJAT"
+    },
+    {
+      "wordindex": 4,
+      "startX": 0,
+      "startY": 4,
+      "length": 4,
+      "direction": "down",
+      "answer": "APAT"
+    },
+    {
+      "wordindex": 5,
+      "startX": 1,
+      "startY": 11,
+      "length": 6,
+      "direction": "down",
+      "answer": "SANOMA"
+    },
+    {
+      "wordindex": 6,
+      "startX": 1,
+      "startY": 4,
+      "length": 5,
+      "direction": "down",
+      "answer": "NUPUT"
+    },
+    {
+      "wordindex": 7,
+      "startX": 2,
+      "startY": 11,
+      "length": 12,
+      "direction": "down",
+      "answer": "KATUMAASTURI"
+    },
+    {
+      "wordindex": 8,
+      "startX": 3,
+      "startY": 11,
+      "length": 6,
+      "direction": "down",
+      "answer": "OTILAT"
+    },
+    {
+      "wordindex": 9,
+      "startX": 3,
+      "startY": 4,
+      "length": 5,
+      "direction": "down",
+      "answer": "AARON"
+    },
+    {
+      "wordindex": 10,
+      "startX": 4,
+      "startY": 6,
+      "length": 7,
+      "direction": "down",
+      "answer": "ANSAITA"
+    },
+    {
+      "wordindex": 11,
+      "startX": 5,
+      "startY": 11,
+      "length": 7,
+      "direction": "down",
+      "answer": "TAHKOTA"
+    },
+    {
+      "wordindex": 12,
+      "startX": 6,
+      "startY": 11,
+      "length": 5,
+      "direction": "down",
+      "answer": "APEUS"
+    },
+    {
+      "wordindex": 13,
+      "startX": 6,
+      "startY": 5,
+      "length": 6,
+      "direction": "down",
+      "answer": "PUSSIT"
+    },
+    {
+      "wordindex": 14,
+      "startX": 7,
+      "startY": 11,
+      "length": 5,
+      "direction": "down",
+      "answer": "SIIKA"
+    },
+    {
+      "wordindex": 15,
+      "startX": 7,
+      "startY": 5,
+      "length": 6,
+      "direction": "down",
+      "answer": "ETUOSA"
+    },
+    {
+      "wordindex": 16,
+      "startX": 8,
+      "startY": 11,
+      "length": 5,
+      "direction": "down",
+      "answer": "ANNAT"
+    },
+    {
+      "wordindex": 17,
+      "startX": 8,
+      "startY": 5,
+      "length": 6,
+      "direction": "down",
+      "answer": "RAUHAT"
+    },
+    {
+      "wordindex": 18,
+      "startX": 9,
+      "startY": 11,
+      "length": 12,
+      "direction": "down",
+      "answer": "NOITATOHTORI"
+    },
+    {
+      "wordindex": 19,
+      "startX": 0,
+      "startY": 10,
+      "length": 10,
+      "direction": "across",
+      "answer": "LAATTAPINO"
+    },
+    {
+      "wordindex": 20,
+      "startX": 0,
+      "startY": 9,
+      "length": 4,
+      "direction": "across",
+      "answer": "ANTI"
+    },
+    {
+      "wordindex": 21,
+      "startX": 5,
+      "startY": 9,
+      "length": 5,
+      "direction": "across",
+      "answer": "HEINI"
+    },
+    {
+      "wordindex": 22,
+      "startX": 0,
+      "startY": 8,
+      "length": 10,
+      "direction": "across",
+      "answer": "JOULUKUKAT"
+    },
+    {
+      "wordindex": 23,
+      "startX": 0,
+      "startY": 7,
+      "length": 4,
+      "direction": "across",
+      "answer": "AMMA"
+    },
+    {
+      "wordindex": 24,
+      "startX": 5,
+      "startY": 7,
+      "length": 5,
+      "direction": "across",
+      "answer": "OSATA"
+    },
+    {
+      "wordindex": 25,
+      "startX": 0,
+      "startY": 6,
+      "length": 6,
+      "direction": "across",
+      "answer": "TAATAT"
+    },
+    {
+      "wordindex": 26,
+      "startX": 4,
+      "startY": 5,
+      "length": 6,
+      "direction": "across",
+      "answer": "NAPERO"
+    },
+    {
+      "wordindex": 27,
+      "startX": 0,
+      "startY": 4,
+      "length": 5,
+      "direction": "across",
+      "answer": "ANSAS"
+    },
+    {
+      "wordindex": 28,
+      "startX": 6,
+      "startY": 4,
+      "length": 4,
+      "direction": "across",
+      "answer": "UTAH"
+    },
+    {
+      "wordindex": 29,
+      "startX": 0,
+      "startY": 3,
+      "length": 10,
+      "direction": "across",
+      "answer": "PUTAANSUUT"
+    },
+    {
+      "wordindex": 30,
+      "startX": 0,
+      "startY": 2,
+      "length": 5,
+      "direction": "across",
+      "answer": "APURI"
+    },
+    {
+      "wordindex": 31,
+      "startX": 6,
+      "startY": 2,
+      "length": 4,
+      "direction": "across",
+      "answer": "SOHO"
+    },
+    {
+      "wordindex": 32,
+      "startX": 0,
+      "startY": 1,
+      "length": 5,
+      "direction": "across",
+      "answer": "TUROT"
+    },
+    {
+      "wordindex": 33,
+      "startX": 6,
+      "startY": 1,
+      "length": 4,
+      "direction": "across",
+      "answer": "ISAR"
+    },
+    {
+      "wordindex": 34,
+      "startX": 1,
+      "startY": 0,
+      "length": 4,
+      "direction": "across",
+      "answer": "TINA"
+    },
+    {
+      "wordindex": 35,
+      "startX": 6,
+      "startY": 0,
+      "length": 4,
+      "direction": "across",
+      "answer": "TATI"
+    }
+  ],
+  "cells": [
+    {
+      "x": 0,
+      "y": 11,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "across": 1,
+        "down": 3
+      }
+    },
+    {
+      "x": 1,
+      "y": 11,
+      "letter": "S",
+      "isBlocked": false,
+      "wordRefs": {
+        "across": 1,
+        "down": 5
+      }
+    },
+    {
+      "x": 2,
+      "y": 11,
+      "letter": "K",
+      "isBlocked": false,
+      "wordRefs": {
+        "across": 1,
+        "down": 7
+      }
+    },
+    {
+      "x": 3,
+      "y": 11,
+      "letter": "O",
+      "isBlocked": false,
+      "wordRefs": {
+        "across": 1,
+        "down": 8
+      }
+    },
+    {
+      "x": 4,
+      "y": 11,
+      "letter": " ",
+      "isBlocked": true,
+      "wordRefs": {}
+    },
+    {
+      "x": 5,
+      "y": 11,
+      "letter": "T",
+      "isBlocked": false,
+      "wordRefs": {
+        "across": 2,
+        "down": 11
+      }
+    },
+    {
+      "x": 6,
+      "y": 11,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "across": 2,
+        "down": 12
+      }
+    },
+    {
+      "x": 7,
+      "y": 11,
+      "letter": "S",
+      "isBlocked": false,
+      "wordRefs": {
+        "across": 2,
+        "down": 14
+      }
+    },
+    {
+      "x": 8,
+      "y": 11,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "across": 2,
+        "down": 16
+      }
+    },
+    {
+      "x": 9,
+      "y": 11,
+      "letter": "N",
+      "isBlocked": false,
+      "wordRefs": {
+        "across": 2,
+        "down": 18
+      }
+    },
+    {
+      "x": 0,
+      "y": 10,
+      "letter": "L",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 3,
+        "across": 19
+      }
+    },
+    {
+      "x": 1,
+      "y": 10,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 5,
+        "across": 19
+      }
+    },
+    {
+      "x": 2,
+      "y": 10,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 7,
+        "across": 19
+      }
+    },
+    {
+      "x": 3,
+      "y": 10,
+      "letter": "T",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 8,
+        "across": 19
+      }
+    },
+    {
+      "x": 4,
+      "y": 10,
+      "letter": "T",
+      "isBlocked": false,
+      "wordRefs": {
+        "across": 19
+      }
+    },
+    {
+      "x": 5,
+      "y": 10,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 11,
+        "across": 19
+      }
+    },
+    {
+      "x": 6,
+      "y": 10,
+      "letter": "P",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 12,
+        "across": 19
+      }
+    },
+    {
+      "x": 7,
+      "y": 10,
+      "letter": "I",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 14,
+        "across": 19
+      }
+    },
+    {
+      "x": 8,
+      "y": 10,
+      "letter": "N",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 16,
+        "across": 19
+      }
+    },
+    {
+      "x": 9,
+      "y": 10,
+      "letter": "O",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 18,
+        "across": 19
+      }
+    },
+    {
+      "x": 0,
+      "y": 9,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 3,
+        "across": 20
+      }
+    },
+    {
+      "x": 1,
+      "y": 9,
+      "letter": "N",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 5,
+        "across": 20
+      }
+    },
+    {
+      "x": 2,
+      "y": 9,
+      "letter": "T",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 7,
+        "across": 20
+      }
+    },
+    {
+      "x": 3,
+      "y": 9,
+      "letter": "I",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 8,
+        "across": 20
+      }
+    },
+    {
+      "x": 4,
+      "y": 9,
+      "letter": " ",
+      "isBlocked": true,
+      "wordRefs": {}
+    },
+    {
+      "x": 5,
+      "y": 9,
+      "letter": "H",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 11,
+        "across": 21
+      }
+    },
+    {
+      "x": 6,
+      "y": 9,
+      "letter": "E",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 12,
+        "across": 21
+      }
+    },
+    {
+      "x": 7,
+      "y": 9,
+      "letter": "I",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 14,
+        "across": 21
+      }
+    },
+    {
+      "x": 8,
+      "y": 9,
+      "letter": "N",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 16,
+        "across": 21
+      }
+    },
+    {
+      "x": 9,
+      "y": 9,
+      "letter": "I",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 18,
+        "across": 21
+      }
+    },
+    {
+      "x": 0,
+      "y": 8,
+      "letter": "J",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 3,
+        "across": 22
+      }
+    },
+    {
+      "x": 1,
+      "y": 8,
+      "letter": "O",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 5,
+        "across": 22
+      }
+    },
+    {
+      "x": 2,
+      "y": 8,
+      "letter": "U",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 7,
+        "across": 22
+      }
+    },
+    {
+      "x": 3,
+      "y": 8,
+      "letter": "L",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 8,
+        "across": 22
+      }
+    },
+    {
+      "x": 4,
+      "y": 8,
+      "letter": "U",
+      "isBlocked": false,
+      "wordRefs": {
+        "across": 22
+      }
+    },
+    {
+      "x": 5,
+      "y": 8,
+      "letter": "K",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 11,
+        "across": 22
+      }
+    },
+    {
+      "x": 6,
+      "y": 8,
+      "letter": "U",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 12,
+        "across": 22
+      }
+    },
+    {
+      "x": 7,
+      "y": 8,
+      "letter": "K",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 14,
+        "across": 22
+      }
+    },
+    {
+      "x": 8,
+      "y": 8,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 16,
+        "across": 22
+      }
+    },
+    {
+      "x": 9,
+      "y": 8,
+      "letter": "T",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 18,
+        "across": 22
+      }
+    },
+    {
+      "x": 0,
+      "y": 7,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 3,
+        "across": 23
+      }
+    },
+    {
+      "x": 1,
+      "y": 7,
+      "letter": "M",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 5,
+        "across": 23
+      }
+    },
+    {
+      "x": 2,
+      "y": 7,
+      "letter": "M",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 7,
+        "across": 23
+      }
+    },
+    {
+      "x": 3,
+      "y": 7,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 8,
+        "across": 23
+      }
+    },
+    {
+      "x": 4,
+      "y": 7,
+      "letter": " ",
+      "isBlocked": true,
+      "wordRefs": {}
+    },
+    {
+      "x": 5,
+      "y": 7,
+      "letter": "O",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 11,
+        "across": 24
+      }
+    },
+    {
+      "x": 6,
+      "y": 7,
+      "letter": "S",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 12,
+        "across": 24
+      }
+    },
+    {
+      "x": 7,
+      "y": 7,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 14,
+        "across": 24
+      }
+    },
+    {
+      "x": 8,
+      "y": 7,
+      "letter": "T",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 16,
+        "across": 24
+      }
+    },
+    {
+      "x": 9,
+      "y": 7,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 18,
+        "across": 24
+      }
+    },
+    {
+      "x": 0,
+      "y": 6,
+      "letter": "T",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 3,
+        "across": 25
+      }
+    },
+    {
+      "x": 1,
+      "y": 6,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 5,
+        "across": 25
+      }
+    },
+    {
+      "x": 2,
+      "y": 6,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 7,
+        "across": 25
+      }
+    },
+    {
+      "x": 3,
+      "y": 6,
+      "letter": "T",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 8,
+        "across": 25
+      }
+    },
+    {
+      "x": 4,
+      "y": 6,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "across": 25
+      }
+    },
+    {
+      "x": 5,
+      "y": 6,
+      "letter": "T",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 11,
+        "across": 25
+      }
+    },
+    {
+      "x": 6,
+      "y": 6,
+      "letter": " ",
+      "isBlocked": true,
+      "wordRefs": {}
+    },
+    {
+      "x": 7,
+      "y": 6,
+      "letter": " ",
+      "isBlocked": true,
+      "wordRefs": {}
+    },
+    {
+      "x": 8,
+      "y": 6,
+      "letter": " ",
+      "isBlocked": true,
+      "wordRefs": {}
+    },
+    {
+      "x": 9,
+      "y": 6,
+      "letter": "T",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 18
+      }
+    },
+    {
+      "x": 0,
+      "y": 5,
+      "letter": " ",
+      "isBlocked": true,
+      "wordRefs": {}
+    },
+    {
+      "x": 1,
+      "y": 5,
+      "letter": " ",
+      "isBlocked": true,
+      "wordRefs": {}
+    },
+    {
+      "x": 2,
+      "y": 5,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 7
+      }
+    },
+    {
+      "x": 3,
+      "y": 5,
+      "letter": " ",
+      "isBlocked": true,
+      "wordRefs": {}
+    },
+    {
+      "x": 4,
+      "y": 5,
+      "letter": "N",
+      "isBlocked": false,
+      "wordRefs": {
+        "across": 26
+      }
+    },
+    {
+      "x": 5,
+      "y": 5,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 11,
+        "across": 26
+      }
+    },
+    {
+      "x": 6,
+      "y": 5,
+      "letter": "P",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 13,
+        "across": 26
+      }
+    },
+    {
+      "x": 7,
+      "y": 5,
+      "letter": "E",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 15,
+        "across": 26
+      }
+    },
+    {
+      "x": 8,
+      "y": 5,
+      "letter": "R",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 17,
+        "across": 26
+      }
+    },
+    {
+      "x": 9,
+      "y": 5,
+      "letter": "O",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 18,
+        "across": 26
+      }
+    },
+    {
+      "x": 0,
+      "y": 4,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 4,
+        "across": 27
+      }
+    },
+    {
+      "x": 1,
+      "y": 4,
+      "letter": "N",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 6,
+        "across": 27
+      }
+    },
+    {
+      "x": 2,
+      "y": 4,
+      "letter": "S",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 7,
+        "across": 27
+      }
+    },
+    {
+      "x": 3,
+      "y": 4,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 9,
+        "across": 27
+      }
+    },
+    {
+      "x": 4,
+      "y": 4,
+      "letter": "S",
+      "isBlocked": false,
+      "wordRefs": {
+        "across": 27
+      }
+    },
+    {
+      "x": 5,
+      "y": 4,
+      "letter": " ",
+      "isBlocked": true,
+      "wordRefs": {}
+    },
+    {
+      "x": 6,
+      "y": 4,
+      "letter": "U",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 13,
+        "across": 28
+      }
+    },
+    {
+      "x": 7,
+      "y": 4,
+      "letter": "T",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 15,
+        "across": 28
+      }
+    },
+    {
+      "x": 8,
+      "y": 4,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 17,
+        "across": 28
+      }
+    },
+    {
+      "x": 9,
+      "y": 4,
+      "letter": "H",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 18,
+        "across": 28
+      }
+    },
+    {
+      "x": 0,
+      "y": 3,
+      "letter": "P",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 4,
+        "across": 29
+      }
+    },
+    {
+      "x": 1,
+      "y": 3,
+      "letter": "U",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 6,
+        "across": 29
+      }
+    },
+    {
+      "x": 2,
+      "y": 3,
+      "letter": "T",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 7,
+        "across": 29
+      }
+    },
+    {
+      "x": 3,
+      "y": 3,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 9,
+        "across": 29
+      }
+    },
+    {
+      "x": 4,
+      "y": 3,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "across": 29
+      }
+    },
+    {
+      "x": 5,
+      "y": 3,
+      "letter": "N",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 11,
+        "across": 29
+      }
+    },
+    {
+      "x": 6,
+      "y": 3,
+      "letter": "S",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 13,
+        "across": 29
+      }
+    },
+    {
+      "x": 7,
+      "y": 3,
+      "letter": "U",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 15,
+        "across": 29
+      }
+    },
+    {
+      "x": 8,
+      "y": 3,
+      "letter": "U",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 17,
+        "across": 29
+      }
+    },
+    {
+      "x": 9,
+      "y": 3,
+      "letter": "T",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 18,
+        "across": 29
+      }
+    },
+    {
+      "x": 0,
+      "y": 2,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 4,
+        "across": 30
+      }
+    },
+    {
+      "x": 1,
+      "y": 2,
+      "letter": "P",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 6,
+        "across": 30
+      }
+    },
+    {
+      "x": 2,
+      "y": 2,
+      "letter": "U",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 7,
+        "across": 30
+      }
+    },
+    {
+      "x": 3,
+      "y": 2,
+      "letter": "R",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 9,
+        "across": 30
+      }
+    },
+    {
+      "x": 4,
+      "y": 2,
+      "letter": "I",
+      "isBlocked": false,
+      "wordRefs": {
+        "across": 30
+      }
+    },
+    {
+      "x": 5,
+      "y": 2,
+      "letter": " ",
+      "isBlocked": true,
+      "wordRefs": {}
+    },
+    {
+      "x": 6,
+      "y": 2,
+      "letter": "S",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 13,
+        "across": 31
+      }
+    },
+    {
+      "x": 7,
+      "y": 2,
+      "letter": "O",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 15,
+        "across": 31
+      }
+    },
+    {
+      "x": 8,
+      "y": 2,
+      "letter": "H",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 17,
+        "across": 31
+      }
+    },
+    {
+      "x": 9,
+      "y": 2,
+      "letter": "O",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 18,
+        "across": 31
+      }
+    },
+    {
+      "x": 0,
+      "y": 1,
+      "letter": "T",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 4,
+        "across": 32
+      }
+    },
+    {
+      "x": 1,
+      "y": 1,
+      "letter": "U",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 6,
+        "across": 32
+      }
+    },
+    {
+      "x": 2,
+      "y": 1,
+      "letter": "R",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 7,
+        "across": 32
+      }
+    },
+    {
+      "x": 3,
+      "y": 1,
+      "letter": "O",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 9,
+        "across": 32
+      }
+    },
+    {
+      "x": 4,
+      "y": 1,
+      "letter": "T",
+      "isBlocked": false,
+      "wordRefs": {
+        "across": 32
+      }
+    },
+    {
+      "x": 5,
+      "y": 1,
+      "letter": " ",
+      "isBlocked": true,
+      "wordRefs": {}
+    },
+    {
+      "x": 6,
+      "y": 1,
+      "letter": "I",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 13,
+        "across": 33
+      }
+    },
+    {
+      "x": 7,
+      "y": 1,
+      "letter": "S",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 15,
+        "across": 33
+      }
+    },
+    {
+      "x": 8,
+      "y": 1,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 17,
+        "across": 33
+      }
+    },
+    {
+      "x": 9,
+      "y": 1,
+      "letter": "R",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 18,
+        "across": 33
+      }
+    },
+    {
+      "x": 0,
+      "y": 0,
+      "letter": " ",
+      "isBlocked": true,
+      "wordRefs": {}
+    },
+    {
+      "x": 1,
+      "y": 0,
+      "letter": "T",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 6,
+        "across": 34
+      }
+    },
+    {
+      "x": 2,
+      "y": 0,
+      "letter": "I",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 7,
+        "across": 34
+      }
+    },
+    {
+      "x": 3,
+      "y": 0,
+      "letter": "N",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 9,
+        "across": 34
+      }
+    },
+    {
+      "x": 4,
+      "y": 0,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "across": 34
+      }
+    },
+    {
+      "x": 5,
+      "y": 0,
+      "letter": " ",
+      "isBlocked": true,
+      "wordRefs": {}
+    },
+    {
+      "x": 6,
+      "y": 0,
+      "letter": "T",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 13,
+        "across": 35
+      }
+    },
+    {
+      "x": 7,
+      "y": 0,
+      "letter": "A",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 15,
+        "across": 35
+      }
+    },
+    {
+      "x": 8,
+      "y": 0,
+      "letter": "T",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 17,
+        "across": 35
+      }
+    },
+    {
+      "x": 9,
+      "y": 0,
+      "letter": "I",
+      "isBlocked": false,
+      "wordRefs": {
+        "down": 18,
+        "across": 35
+      }
+    }
+  ]
+}
