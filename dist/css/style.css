@@ -1,0 +1,243 @@
+:root {
+    --grid-width: 903.9px;
+    --grid-height: 1107.6px;
+    --cell-width: 90.4px;
+    --cell-height: 92.3px;
+    --primary-color: #000;
+    --secondary-color: #228B22;
+    --highlight-color: rgba(0, 123, 255, 0.4);      /* More visible blue for focused cell */
+    --highlight-word-color: rgba(0, 123, 255, 0.1); /* Subtle blue for word highlight */
+    --background-color: #f8f9fa;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: var(--background-color);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.invisible {
+    visibility: hidden;
+    height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.puzzle-container {
+    position: relative;
+    width: 1089px;
+    height: 1846px;
+    margin: 0 auto;
+}
+
+.puzzle-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.crossword-grid {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: var(--grid-width);
+    height: var(--grid-height);
+    pointer-events: none;
+}
+
+.cell {
+    position: absolute;
+    width: var(--cell-width);
+    height: var(--cell-height);
+    border: none;
+    background: transparent;
+    pointer-events: all;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.cell input {
+    width: 100%;
+    height: 75%;
+    border: none;
+    text-align: center;
+    font-size: calc(var(--cell-height) * 0.75);
+    background: transparent;
+    color: var(--primary-color);
+    caret-color: var(--highlight-color);
+    text-transform: uppercase;
+    padding: 0;
+    margin: 0;
+}
+
+.cell.selected {
+    border: 2px solid var(--highlight-color);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.cell.word-highlight {
+    background-color: var(--highlight-word-color);
+}
+
+.cell.correct {
+    color: var(--secondary-color);
+}
+
+.cell.incorrect {
+    color: var(--primary-color);
+}
+
+.cell.blocked {
+    background-color: rgba(128, 128, 128, 0.05);
+    pointer-events: none;
+}
+
+.cell.blocked.flash {
+    animation: flash 0.5s ease-out;
+}
+
+@keyframes flash {
+    0% { background-color: rgba(196, 30, 58, 0.1); }
+    100% { background-color: rgba(128, 128, 128, 0.05); }
+}
+
+.cell.selected input {
+    background-color: var(--highlight-color);
+    color: var(--primary-color);
+}
+
+.cell input:focus {
+    outline: none;
+    background-color: var(--highlight-color);
+    color: var(--primary-color);
+}
+
+.direction-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.controls {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+button {
+    padding: 10px 20px;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    white-space: nowrap;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+#check-button, #check-solution-button {
+    background-color: var(--primary-color);
+}
+
+#submit-button {
+    background-color: #0056b3;
+}
+
+.cell-number {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    font-size: 12px;
+    color: #666;
+}
+
+.clues-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.clues-section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.clues-section h2 {
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+}
+
+.clue-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.clue-item {
+    margin-bottom: 10px;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.clue-item:hover {
+    background-color: #f0f0f0;
+}
+
+.selected-clue {
+    background-color: #e6ffe6;
+}
+
+@media (max-width: 768px) {
+    .clues-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 1200px) {
+    .puzzle-container {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1089/1846;
+    }
+    
+    .controls {
+        position: fixed;
+        bottom: 20px;
+        top: auto;
+        right: 50%;
+        transform: translateX(50%);
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
