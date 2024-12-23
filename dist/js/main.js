@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.removeItem('puzzleState');
 
     // Fetch puzzle data
-    fetch('/data/puzzle2024.json')
+    fetch('../data/puzzle2024.json')
         .then(response => response.json())
         .then(data => {
             console.log('Raw puzzle data:', data);

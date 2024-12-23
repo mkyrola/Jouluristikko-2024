@@ -1,7 +1,15 @@
 [build]
   publish = "dist"
 
+# Redirect rule for SPA
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+  force = false   # Don't force redirect for existing files
+
+# Asset handling
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
