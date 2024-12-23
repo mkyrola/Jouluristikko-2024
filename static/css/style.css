@@ -1,15 +1,18 @@
 :root {
-    /* Base everything off puzzle width */
+    /* Base dimensions */
     --puzzle-width: min(100%, 1089px);
     
+    /* Base unit: puzzle width divided into 12 equal columns */
+    --cell-base-width: calc(var(--puzzle-width) / 12);
+    
     /* Grid dimensions */
-    --grid-left-offset: calc(var(--puzzle-width) * 0.25); /* Distance from left edge to first column */
-    --grid-width: calc(var(--puzzle-width) - var(--grid-left-offset)); /* Width from first column to right edge */
-    --grid-height: calc(var(--puzzle-width) * 1.017); /* 1107.6/1089 = 1.017 */
+    --grid-width: calc(var(--cell-base-width) * 10);  /* Grid spans 10 columns */
+    --grid-left-offset: calc(var(--cell-base-width) * 2);  /* Left text area spans 2 columns */
+    --grid-height: calc(var(--puzzle-width) * 1.017); /* Keep existing vertical scaling */
     
     /* Cell dimensions */
-    --cell-width: calc(var(--grid-width) / 10);  /* Grid is 10 cells wide */
-    --cell-height: calc(var(--grid-height) / 12); /* Grid is 12 cells high */
+    --cell-width: var(--cell-base-width);  /* Each cell is one base unit wide */
+    --cell-height: calc(var(--grid-height) / 12); /* Keep existing vertical cell height */
     
     /* Colors */
     --primary-color: #000;
