@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.removeItem('puzzleState');
 
     // Fetch puzzle data
-    fetch('/data/puzzle2024.json')
+    fetch('/api/puzzle')
         .then(response => response.json())
         .then(data => {
             console.log('Raw puzzle data:', data);
@@ -304,7 +304,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const percentage = Math.round((correctCount / totalCells) * 100);
         const solutionWordCorrect = checkSolutionWord();
 
-        // Always show answer
+        // Enable submit button if solution is correct
+        submitButton.disabled = !solutionWordCorrect;
+
+        // Show answer
         alert(
             `Ratkaisusana on ${solutionWordCorrect ? 'oikein' : 'väärin'}.\n` +
             `Ristikko on ${percentage} % oikein.`
@@ -380,13 +383,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.getElementById('submit-button').addEventListener('click', () => {
-        // Always check solution word first
-        const solutionAttempt = SOLUTION_COORDS.map(coord => 
-            userAnswers[`${coord.x},${coord.y}`] || ' '
-        ).join('');
-        
-        if (solutionAttempt.toUpperCase() !== SOLUTION_WORD) {
-            alert('Ratkaisusana pitää olla oikein ratkaistu');
+        // Check if solution word is correct
+        if (!checkSolutionWord()) {
+            alert('Tarkista ratkaisusana');
             return;
         }
 
@@ -404,6 +403,10 @@ document.addEventListener('DOMContentLoaded', () => {
             <div style="margin: 10px 0;">
                 <label for="phone">Puhelin:</label><br>
                 <input type="tel" id="phone" required>
+            </div>
+            <div style="margin: 10px 0;">
+                <label for="organization">Yritys/Organisaatio:</label><br>
+                <input type="text" id="organization">
             </div>
         `;
 
@@ -455,9 +458,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const name = form.querySelector('#name').value;
             const email = form.querySelector('#email').value;
             const phone = form.querySelector('#phone').value;
+            const organization = form.querySelector('#organization').value;
 
             if (!name || !email || !phone) {
-                alert('Täytä kaikki kentät!');
+                alert('Täytä kaikki pakolliset kentät!');
                 return;
             }
 
@@ -481,7 +485,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 userDetails: {
                     name,
                     email,
-                    phone
+                    phone,
+                    organization
                 },
                 correctPercentage: percentage,
                 solutionWord: SOLUTION_COORDS.map(coord => 

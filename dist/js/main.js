@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let userAnswers = {};
     let lastClickedCell = null;
     let lastDirection = null;
-    let isSolutionCorrect = false;
     let currentHighlightedWord = null;
 
     // Disable submit button initially
@@ -304,89 +303,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const percentage = Math.round((correctCount / totalCells) * 100);
         const solutionWordCorrect = checkSolutionWord();
 
-        // Always show answer
+        // Enable submit button if solution is correct
+        submitButton.disabled = !solutionWordCorrect;
+
+        // Show answer
         alert(
             `Ratkaisusana on ${solutionWordCorrect ? 'oikein' : 'väärin'}.\n` +
             `Ristikko on ${percentage} % oikein.`
         );
     });
 
-    document.getElementById('check-solution-button').addEventListener('click', () => {
-        console.log('Checking solution word...');
-        console.log('Current userAnswers:', userAnswers);
-        console.log('Solution coordinates:', SOLUTION_COORDS);
-        
-        // Get the current solution attempt
-        let solutionAttempt = '';
-        for (let i = 0; i < SOLUTION_COORDS.length; i++) {
-            const coord = SOLUTION_COORDS[i];
-            const key = `${coord.x},${coord.y}`;
-            const value = userAnswers[key];
-            console.log(`Checking coordinate ${i + 1}:`, {
-                x: coord.x,
-                y: coord.y,
-                key: key,
-                value: value,
-                allAnswers: userAnswers
-            });
-            solutionAttempt += (value || ' ');
-        }
-        
-        console.log('Final solution attempt:', solutionAttempt);
-        console.log('Expected solution:', SOLUTION_WORD);
-        
-        const solutionWordCorrect = solutionAttempt.toUpperCase() === SOLUTION_WORD;
-        
-        if (solutionWordCorrect) {
-            alert('Ratkaisusana on oikein eli SINAPPI');
-            submitButton.disabled = false;
-            isSolutionCorrect = true;
-        } else {
-            alert(`Ratkaisusana on väärin, tarkista ristikko\nArvaus: ${solutionAttempt}`);
-        }
-    });
-
-    document.getElementById('clear-button').addEventListener('click', () => {
-        if (confirm('Haluatko varmasti tyhjentää ristikon?')) {
-            userAnswers = {};
-            localStorage.removeItem('puzzleState');
-            document.querySelectorAll('.cell input').forEach(input => {
-                input.value = '';
-            });
-            document.querySelectorAll('.cell').forEach(cell => {
-                cell.classList.remove('correct', 'incorrect', 'word-highlight');
-            });
-            if (selectedCell) {
-                selectedCell.classList.remove('selected');
-                selectedCell = null;
-            }
-            // Reset solution check state
-            submitButton.disabled = true;
-            isSolutionCorrect = false;
-        }
-    });
-
-    function checkSolutionWord() {
-        // Get the letters from the specific coordinates
-        const letters = SOLUTION_COORDS.map(coord => {
-            const letter = userAnswers[`${coord.x},${coord.y}`] || '';
-            console.log(`Checking coord (${coord.x},${coord.y}): ${letter}`); // Debug log
-            return letter;
-        }).join('');
-        
-        console.log('Current solution word:', letters); // Debug log
-        console.log('Expected solution word:', SOLUTION_WORD); // Debug log
-        return letters.toUpperCase() === SOLUTION_WORD;
-    }
-
     document.getElementById('submit-button').addEventListener('click', () => {
-        // Always check solution word first
-        const solutionAttempt = SOLUTION_COORDS.map(coord => 
-            userAnswers[`${coord.x},${coord.y}`] || ' '
-        ).join('');
-        
-        if (solutionAttempt.toUpperCase() !== SOLUTION_WORD) {
-            alert('Ratkaisusana pitää olla oikein ratkaistu');
+        // Check if solution word is correct
+        if (!checkSolutionWord()) {
+            alert('Tarkista ratkaisusana');
             return;
         }
 
@@ -404,6 +334,10 @@ document.addEventListener('DOMContentLoaded', () => {
             <div style="margin: 10px 0;">
                 <label for="phone">Puhelin:</label><br>
                 <input type="tel" id="phone" required>
+            </div>
+            <div style="margin: 10px 0;">
+                <label for="organization">Yritys/Organisaatio:</label><br>
+                <input type="text" id="organization">
             </div>
         `;
 
@@ -455,9 +389,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const name = form.querySelector('#name').value;
             const email = form.querySelector('#email').value;
             const phone = form.querySelector('#phone').value;
+            const organization = form.querySelector('#organization').value;
 
             if (!name || !email || !phone) {
-                alert('Täytä kaikki kentät!');
+                alert('Täytä kaikki pakolliset kentät!');
                 return;
             }
 
@@ -481,7 +416,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 userDetails: {
                     name,
                     email,
-                    phone
+                    phone,
+                    organization
                 },
                 correctPercentage: percentage,
                 solutionWord: SOLUTION_COORDS.map(coord => 
@@ -524,4 +460,17 @@ document.addEventListener('DOMContentLoaded', () => {
             '4. Osallistuaksesi arvontaan, täytä yhteystietosi ja lähetä vastauksesi.'
         );
     });
+
+    function checkSolutionWord() {
+        // Get the letters from the specific coordinates
+        const letters = SOLUTION_COORDS.map(coord => {
+            const letter = userAnswers[`${coord.x},${coord.y}`] || '';
+            console.log(`Checking coord (${coord.x},${coord.y}): ${letter}`); // Debug log
+            return letter;
+        }).join('');
+        
+        console.log('Current solution word:', letters); // Debug log
+        console.log('Expected solution word:', SOLUTION_WORD); // Debug log
+        return letters.toUpperCase() === SOLUTION_WORD;
+    }
 });
