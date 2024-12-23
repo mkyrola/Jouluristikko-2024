@@ -1,14 +1,20 @@
 :root {
-    /* Grid dimensions relative to puzzle image */
+    /* Base everything off puzzle width */
     --puzzle-width: min(100%, 1089px);
-    --grid-width: calc(var(--puzzle-width) * 0.83);  /* 903.9/1089 ≈ 0.83 */
-    --grid-height: calc(var(--puzzle-width) * 1.017); /* 1107.6/1089 ≈ 1.017 */
-    --cell-width: calc(var(--puzzle-width) * 0.083);  /* 90.4/1089 ≈ 0.083 */
-    --cell-height: calc(var(--puzzle-width) * 0.0847); /* 92.3/1089 ≈ 0.0847 */
+    
+    /* Grid dimensions */
+    --grid-width: calc(var(--puzzle-width) * 0.83);  /* 903.9/1089 = 0.83 */
+    --grid-height: calc(var(--puzzle-width) * 1.017); /* 1107.6/1089 = 1.017 */
+    
+    /* Cell dimensions */
+    --cell-width: calc(var(--grid-width) / 10);  /* Grid is 10 cells wide */
+    --cell-height: calc(var(--grid-height) / 12); /* Grid is 12 cells high */
+    
+    /* Colors */
     --primary-color: #000;
     --secondary-color: #228B22;
-    --highlight-color: rgba(0, 123, 255, 0.4);      /* More visible blue for focused cell */
-    --highlight-word-color: rgba(0, 123, 255, 0.1); /* Subtle blue for word highlight */
+    --highlight-color: rgba(0, 123, 255, 0.4);
+    --highlight-word-color: rgba(0, 123, 255, 0.1);
     --background-color: #f8f9fa;
 }
 
@@ -43,9 +49,6 @@ h1 {
     width: 100%;
     max-width: 1089px;
     margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 .puzzle-wrapper {
@@ -89,13 +92,14 @@ h1 {
     height: 75%;
     border: none;
     text-align: center;
-    font-size: calc(var(--cell-height) * 0.75);
+    font-size: calc(var(--cell-height) * 0.6);
     background: transparent;
     color: var(--primary-color);
     caret-color: var(--highlight-color);
     text-transform: uppercase;
     padding: 0;
     margin: 0;
+    pointer-events: all;
 }
 
 .cell.selected {
