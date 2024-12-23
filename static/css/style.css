@@ -5,13 +5,13 @@
     /* Base unit: puzzle width divided into 12 equal columns */
     --cell-base-width: calc(var(--puzzle-width) / 12);
     
-    /* Grid dimensions */
-    --grid-width: calc(var(--cell-base-width) * 10);  /* Grid spans 10 columns */
-    --grid-left-offset: calc(var(--cell-base-width) * 2);  /* Left text area spans 2 columns */
+    /* Grid dimensions - simplified to match 12-column concept */
+    --grid-left-offset: calc(var(--puzzle-width) * 2/12);  /* Start at column 2 */
+    --grid-width: calc(var(--puzzle-width) * 10/12);      /* Span 10 columns */
     --grid-height: calc(var(--puzzle-width) * 1.017); /* Keep existing vertical scaling */
     
     /* Cell dimensions */
-    --cell-width: var(--cell-base-width);  /* Each cell is one base unit wide */
+    --cell-width: var(--cell-base-width);  /* Each cell is one column wide */
     --cell-height: calc(var(--grid-height) / 12); /* Keep existing vertical cell height */
     
     /* Colors */

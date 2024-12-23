@@ -109,8 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
             cellElement.classList.add('blocked');
         }
         
-        // Position cells using pre-calculated cell width from CSS
-        cellElement.style.left = `calc(var(--grid-left-offset) + (var(--cell-base-width) * ${cell.x}))`;
+        // Position cells absolutely from puzzle left edge: (x + 2) columns from left
+        cellElement.style.left = `calc(var(--puzzle-width) * (${cell.x + 2}) / 12)`;
         cellElement.style.top = `calc(var(--cell-height) * ${cell.y})`;
 
         return cellElement;
