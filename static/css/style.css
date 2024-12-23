@@ -1,8 +1,10 @@
 :root {
-    --grid-width: 903.9px;
-    --grid-height: 1107.6px;
-    --cell-width: 90.4px;
-    --cell-height: 92.3px;
+    /* Base the grid on viewport width for consistent scaling */
+    --base-unit: min(calc(100vw / 12), 90.4px);  /* Cap at original size */
+    --grid-width: calc(var(--base-unit) * 10);
+    --grid-height: calc(var(--base-unit) * 12);
+    --cell-width: var(--base-unit);
+    --cell-height: calc(var(--base-unit) * 1.02); /* Maintain aspect ratio */
     --primary-color: #000;
     --secondary-color: #228B22;
     --highlight-color: rgba(0, 123, 255, 0.4);      /* More visible blue for focused cell */
