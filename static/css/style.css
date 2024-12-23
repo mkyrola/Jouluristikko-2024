@@ -1,10 +1,10 @@
 :root {
-    /* Base the grid on viewport width for consistent scaling */
-    --base-unit: min(calc(100vw / 12), 90.4px);  /* Cap at original size */
-    --grid-width: calc(var(--base-unit) * 10);
-    --grid-height: calc(var(--base-unit) * 12);
-    --cell-width: var(--base-unit);
-    --cell-height: calc(var(--base-unit) * 1.02); /* Maintain aspect ratio */
+    /* Grid dimensions relative to puzzle image */
+    --puzzle-width: min(100%, 1089px);
+    --grid-width: calc(var(--puzzle-width) * 0.83);  /* 903.9/1089 ≈ 0.83 */
+    --grid-height: calc(var(--puzzle-width) * 1.017); /* 1107.6/1089 ≈ 1.017 */
+    --cell-width: calc(var(--puzzle-width) * 0.083);  /* 90.4/1089 ≈ 0.083 */
+    --cell-height: calc(var(--puzzle-width) * 0.0847); /* 92.3/1089 ≈ 0.0847 */
     --primary-color: #000;
     --secondary-color: #228B22;
     --highlight-color: rgba(0, 123, 255, 0.4);      /* More visible blue for focused cell */
@@ -52,6 +52,12 @@ h1 {
     position: relative;
     width: 100%;
     aspect-ratio: 1089/1846;
+}
+
+.puzzle-image {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 .controls {
@@ -115,48 +121,6 @@ h1 {
     cursor: not-allowed;
     box-shadow: none;
     transform: none;
-}
-
-/* Responsive styles */
-@media (max-width: 1200px) {
-    .controls {
-        width: 90%;
-        max-width: var(--grid-width);
-    }
-}
-
-@media (max-width: 768px) {
-    .controls {
-        padding: 12px;
-        gap: 8px;
-    }
-
-    .controls button {
-        min-width: 120px;
-        font-size: 14px;
-        padding: 10px 12px;
-    }
-}
-
-@media (max-width: 480px) {
-    .controls {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        width: 80%;
-        gap: 8px;
-    }
-    
-    .controls button {
-        min-width: unset;
-        width: 100%;
-        font-size: 13px;
-        padding: 8px 10px;
-    }
-    
-    /* Last button spans full width if odd number of buttons */
-    .controls button:last-child:nth-child(odd) {
-        grid-column: 1 / -1;
-    }
 }
 
 .crossword-grid {
@@ -249,35 +213,43 @@ h1 {
 
 /* Responsive styles */
 @media (max-width: 1200px) {
-    .container {
-        padding: 0 10px;
-    }
-    
     .controls {
-        padding: 0 10px;
+        width: 90%;
+        max-width: var(--grid-width);
     }
 }
 
 @media (max-width: 768px) {
+    .controls {
+        padding: 12px;
+        gap: 8px;
+    }
+
     .controls button {
         min-width: 120px;
         font-size: 14px;
-        padding: 8px 12px;
+        padding: 10px 12px;
     }
 }
 
 @media (max-width: 480px) {
     .controls {
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: 80%;
+        gap: 8px;
     }
     
     .controls button {
-        width: 100%;
         min-width: unset;
+        width: 100%;
+        font-size: 13px;
+        padding: 8px 10px;
     }
     
-    body {
-        padding: 10px;
+    /* Last button spans full width if odd number of buttons */
+    .controls button:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
     }
 }
 
