@@ -62,6 +62,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const grid = document.getElementById('crossword-grid');
         grid.innerHTML = ''; // Clear existing grid
         
+        // Debug: Log dimensions in pixels
+        const puzzleImage = document.querySelector('.puzzle-image');
+        const gridElement = document.getElementById('crossword-grid');
+        console.log('Actual puzzle image width:', puzzleImage.offsetWidth + 'px');
+        console.log('Actual grid width:', gridElement.offsetWidth + 'px');
+        console.log('Grid left position:', gridElement.offsetLeft + 'px');
+        
         // Debug: Log the dimensions of the grid
         const maxX = Math.max(...puzzleData.cells.map(c => c.x));
         const maxY = Math.max(...puzzleData.cells.map(c => c.y));
@@ -109,10 +116,21 @@ document.addEventListener('DOMContentLoaded', () => {
         if (cell.isBlocked) {
             cellElement.classList.add('blocked');
         }
+
+        // Debug: Calculate and log cell dimensions
+        const puzzleWidth = document.querySelector('.puzzle-image').offsetWidth;
+        const cellBaseWidth = puzzleWidth / 12;
+        const currentLeft = puzzleWidth * (cell.x + 2) / 12;
+        console.log(`Cell ${cell.x}: Expected width=${cellBaseWidth}px, left=${currentLeft}px`);
         
-        // Position cells absolutely from puzzle left edge: (x + 2) columns from left
-        cellElement.style.left = `calc(var(--puzzle-width) * (${cell.x + 2}) / 12)`;
+        // Position cells using pre-calculated cell width from CSS
+        cellElement.style.left = `calc(var(--cell-base-width) * (${cell.x + 2}))`;
         cellElement.style.top = `calc(var(--cell-height) * ${cell.y})`;
+
+        // Debug: Log actual cell dimensions after positioning
+        setTimeout(() => {
+            console.log(`Cell ${cell.x}: Actual width=${cellElement.offsetWidth}px, left=${cellElement.offsetLeft}px`);
+        }, 0);
 
         return cellElement;
     }
