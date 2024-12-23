@@ -110,8 +110,8 @@ document.addEventListener('DOMContentLoaded', () => {
             cellElement.classList.add('blocked');
         }
         
-        // Use CSS custom properties for positioning
-        cellElement.style.left = `calc(var(--cell-width) * ${cell.x})`;
+        // Position cells proportionally within grid width
+        cellElement.style.left = `calc(var(--grid-left-offset) + (var(--grid-width) * ${cell.x} / 10))`;
         cellElement.style.top = `calc(var(--cell-height) * ${cell.y})`;
 
         return cellElement;
