@@ -20,6 +20,7 @@ body {
 .container {
     max-width: 1200px;
     margin: 0 auto;
+    padding: 0 20px;
 }
 
 .invisible {
@@ -37,15 +38,77 @@ h1 {
 
 .puzzle-container {
     position: relative;
-    width: 1089px;
-    height: 1846px;
+    width: 100%;
+    max-width: 1089px;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.controls {
+    width: 100%;
+    max-width: var(--grid-width);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.controls button {
+    flex: 1;
+    min-width: 150px;
+    padding: 10px 15px;
+    font-size: 16px;
+    white-space: nowrap;
+    background-color: #c41e3a; /* Christmas red */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.controls button:hover {
+    background-color: #a01830; /* Darker Christmas red */
+}
+
+#check-button, #check-solution-button {
+    background-color: #146B3A; /* Christmas green */
+}
+
+#check-button:hover, #check-solution-button:hover {
+    background-color: #0f5028; /* Darker Christmas green */
+}
+
+#instructions-button {
+    background-color: #165B33; /* Different shade of Christmas green */
+}
+
+#instructions-button:hover {
+    background-color: #114426; /* Darker shade */
+}
+
+.controls button:disabled {
+    background-color: #d9d9d9;
+    color: #999;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.puzzle-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1089/1846;
 }
 
 .puzzle-image {
     width: 100%;
-    height: 100%;
-    object-fit: contain;
+    height: auto;
+    display: block;
 }
 
 .crossword-grid {
@@ -100,82 +163,80 @@ h1 {
 }
 
 .cell.incorrect {
-    color: var(--primary-color);
+    color: red;
 }
 
 .cell.blocked {
-    background-color: rgba(128, 128, 128, 0.05);
     pointer-events: none;
 }
 
-.cell.blocked.flash {
-    animation: flash 0.5s ease-out;
+/* Modal styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
-@keyframes flash {
-    0% { background-color: rgba(196, 30, 58, 0.1); }
-    100% { background-color: rgba(128, 128, 128, 0.05); }
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 500px;
+    width: 90%;
 }
 
-.cell.selected input {
-    background-color: var(--highlight-color);
-    color: var(--primary-color);
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
 }
 
-.cell input:focus {
-    outline: none;
-    background-color: var(--highlight-color);
-    color: var(--primary-color);
+/* Responsive styles */
+@media (max-width: 1200px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .controls {
+        padding: 0 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .controls button {
+        min-width: 120px;
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .controls {
+        flex-direction: column;
+    }
+    
+    .controls button {
+        width: 100%;
+        min-width: unset;
+    }
+    
+    body {
+        padding: 10px;
+    }
 }
 
 .direction-toggle {
     position: absolute;
     top: 20px;
     right: 20px;
-}
-
-.controls {
-    position: absolute;
-    top: 60px;
-    right: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-button {
-    padding: 10px 20px;
-    background-color: var(--secondary-color);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    white-space: nowrap;
-}
-
-button:hover {
-    opacity: 0.9;
-}
-
-#check-button, #check-solution-button {
-    background-color: var(--primary-color);
-}
-
-#submit-button {
-    background-color: #0056b3;
-}
-
-.cell-number {
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    font-size: 12px;
-    color: #666;
 }
 
 .clues-container {
@@ -217,27 +278,19 @@ button:hover {
     background-color: #e6ffe6;
 }
 
-@media (max-width: 768px) {
-    .clues-container {
-        grid-template-columns: 1fr;
-    }
+.cell-number {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    font-size: 12px;
+    color: #666;
 }
 
-@media (max-width: 1200px) {
-    .puzzle-container {
-        width: 100%;
-        height: auto;
-        aspect-ratio: 1089/1846;
-    }
-    
-    .controls {
-        position: fixed;
-        bottom: 20px;
-        top: auto;
-        right: 50%;
-        transform: translateX(50%);
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
+@keyframes flash {
+    0% { background-color: rgba(196, 30, 58, 0.1); }
+    100% { background-color: rgba(128, 128, 128, 0.05); }
+}
+
+.cell.blocked.flash {
+    animation: flash 0.5s ease-out;
 }
