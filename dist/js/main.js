@@ -109,8 +109,9 @@ document.addEventListener('DOMContentLoaded', () => {
             cellElement.classList.add('blocked');
         }
         
-        cellElement.style.left = `${cell.x * 90.4}px`;
-        cellElement.style.top = `${cell.y * 92.3}px`;
+        // Use CSS custom properties for positioning
+        cellElement.style.left = `calc(var(--cell-width) * ${cell.x})`;
+        cellElement.style.top = `calc(var(--cell-height) * ${cell.y})`;
 
         return cellElement;
     }
