@@ -3,7 +3,8 @@
     --puzzle-width: min(100%, 1089px);
     
     /* Grid dimensions */
-    --grid-width: calc(var(--puzzle-width) * 0.83);  /* 903.9/1089 = 0.83 */
+    --grid-left-offset: calc(var(--puzzle-width) * 0.25); /* Distance from left edge to first column */
+    --grid-width: calc(var(--puzzle-width) - var(--grid-left-offset)); /* Width from first column to right edge */
     --grid-height: calc(var(--puzzle-width) * 1.017); /* 1107.6/1089 = 1.017 */
     
     /* Cell dimensions */
@@ -60,7 +61,7 @@ body {
 .crossword-grid {
     position: absolute;
     bottom: 0;
-    right: 0;
+    left: var(--grid-left-offset);
     width: var(--grid-width);
     height: var(--grid-height);
     pointer-events: none;
