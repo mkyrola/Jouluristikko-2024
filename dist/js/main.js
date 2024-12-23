@@ -109,8 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
             cellElement.classList.add('blocked');
         }
         
-        // Position cells proportionally within grid width
-        cellElement.style.left = `calc(var(--grid-left-offset) + (var(--grid-width) * ${cell.x} / 10))`;
+        // Position cells using pre-calculated cell width from CSS
+        cellElement.style.left = `calc(var(--grid-left-offset) + (var(--cell-base-width) * ${cell.x}))`;
         cellElement.style.top = `calc(var(--cell-height) * ${cell.y})`;
 
         return cellElement;
