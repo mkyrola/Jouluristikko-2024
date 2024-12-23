@@ -34,7 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
             data.words = data.words.map(word => ({
                 ...word,
                 startX: word.startX,
-                startY: 11 - word.startY // Transform Y coordinate for words too
+                startY: 11 - word.startY, // Transform Y coordinate for words too
+                direction: word.direction.toLowerCase() // Ensure consistent case
             }));
             console.log('First cell after transform:', data.cells[0]);
             console.log('First word after transform:', data.words[0]);
@@ -116,15 +117,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function handleCellClick(event, cell) {
-        const x = parseInt(cell.dataset.x);
-        const y = parseInt(cell.dataset.y);
+        const x = cell.x;
+        const y = cell.y;
+
+        console.log('Click at:', x, y); // Debug log
 
         // Find words that contain this cell
-        const wordsAtPoint = puzzleData.words.filter(word => 
-            word.coordinates.some(coord => coord.x === x && coord.y === y)
-        );
+        const wordsAtPoint = puzzleData.words.filter(word => {
+            if (word.direction === 'across') {
+                const isInWord = y === word.startY && x >= word.startX && x < (word.startX + word.length);
+                console.log('Checking across word:', word.wordindex, isInWord); // Debug log
+                return isInWord;
+            } else { // down
+                const isInWord = x === word.startX && y >= word.startY && y < (word.startY + word.length);
+                console.log('Checking down word:', word.wordindex, isInWord); // Debug log
+                return isInWord;
+            }
+        });
 
-        if (wordsAtPoint.length === 0) return;
+        console.log('Words at point:', wordsAtPoint); // Debug log
+
+        if (wordsAtPoint.length === 0) {
+            console.log('No words found at point'); // Debug log
+            return;
+        }
 
         // Clear previous highlights
         document.querySelectorAll('.cell.word-highlight').forEach(cell => {
@@ -132,27 +148,47 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // If there's only one word or if this is a different cell, highlight first word
-        if (wordsAtPoint.length === 1 || (lastClickedCell.x !== x || lastClickedCell.y !== y)) {
+        if (!lastClickedCell || wordsAtPoint.length === 1 || 
+            lastClickedCell.x !== x || lastClickedCell.y !== y) {
             currentHighlightedWord = wordsAtPoint[0];
         } else {
             // Toggle between words at the same cell
-            const currentIndex = wordsAtPoint.findIndex(w => 
-                w.coordinates.every((coord, i) => 
-                    currentHighlightedWord && i < currentHighlightedWord.coordinates.length && 
-                    coord.x === currentHighlightedWord.coordinates[i].x && 
-                    coord.y === currentHighlightedWord.coordinates[i].y
-                )
-            );
+            const currentIndex = wordsAtPoint.findIndex(w => w.wordindex === currentHighlightedWord.wordindex);
             currentHighlightedWord = wordsAtPoint[(currentIndex + 1) % wordsAtPoint.length];
         }
 
+        console.log('Current highlighted word:', currentHighlightedWord); // Debug log
+
         // Highlight the current word
-        currentHighlightedWord.coordinates.forEach(coord => {
-            const cell = document.querySelector(`.cell[data-x="${coord.x}"][data-y="${coord.y}"]`);
-            if (cell) cell.classList.add('word-highlight');
-        });
+        if (currentHighlightedWord.direction === 'across') {
+            for (let i = 0; i < currentHighlightedWord.length; i++) {
+                const cellToHighlight = document.querySelector(
+                    `.cell[data-x="${currentHighlightedWord.startX + i}"][data-y="${currentHighlightedWord.startY}"]`
+                );
+                if (cellToHighlight) {
+                    console.log('Highlighting cell:', currentHighlightedWord.startX + i, currentHighlightedWord.startY);
+                    cellToHighlight.classList.add('word-highlight');
+                }
+            }
+        } else { // down
+            for (let i = 0; i < currentHighlightedWord.length; i++) {
+                const cellToHighlight = document.querySelector(
+                    `.cell[data-x="${currentHighlightedWord.startX}"][data-y="${currentHighlightedWord.startY + i}"]`
+                );
+                if (cellToHighlight) {
+                    console.log('Highlighting cell:', currentHighlightedWord.startX, currentHighlightedWord.startY + i);
+                    cellToHighlight.classList.add('word-highlight');
+                }
+            }
+        }
 
         lastClickedCell = { x, y };
+        
+        // Focus the input
+        const input = event.target.querySelector('input') || event.target;
+        if (input.tagName === 'INPUT') {
+            input.focus();
+        }
     }
 
     function findNextCell(currentCell) {
@@ -161,18 +197,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentX = parseInt(currentCell.x);
         const currentY = parseInt(currentCell.y);
         
-        // Get current position in the word
-        const currentIndex = currentHighlightedWord.coordinates.findIndex(coord => 
-            coord.x === currentX && coord.y === currentY
-        );
-        
-        if (currentIndex === -1 || currentIndex === currentHighlightedWord.coordinates.length - 1) {
-            return null;
+        if (currentHighlightedWord.direction === 'across') {
+            // Check if we're at the end of the word
+            if (currentX >= currentHighlightedWord.startX + currentHighlightedWord.length - 1) {
+                return null;
+            }
+            return document.querySelector(`.cell[data-x="${currentX + 1}"][data-y="${currentY}"]`);
+        } else {
+            // Check if we're at the end of the word
+            if (currentY >= currentHighlightedWord.startY + currentHighlightedWord.length - 1) {
+                return null;
+            }
+            return document.querySelector(`.cell[data-x="${currentX}"][data-y="${currentY + 1}"]`);
         }
-        
-        // Move to next cell
-        const nextCoord = currentHighlightedWord.coordinates[currentIndex + 1];
-        return document.querySelector(`.cell[data-x="${nextCoord.x}"][data-y="${nextCoord.y}"]`);
     }
 
     function findPrevCell(currentCell) {
@@ -181,18 +218,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentX = parseInt(currentCell.x);
         const currentY = parseInt(currentCell.y);
         
-        // Get current position in the word
-        const currentIndex = currentHighlightedWord.coordinates.findIndex(coord => 
-            coord.x === currentX && coord.y === currentY
-        );
-        
-        if (currentIndex <= 0) {
-            return null;
+        if (currentHighlightedWord.direction === 'across') {
+            // Check if we're at the start of the word
+            if (currentX <= currentHighlightedWord.startX) {
+                return null;
+            }
+            return document.querySelector(`.cell[data-x="${currentX - 1}"][data-y="${currentY}"]`);
+        } else {
+            // Check if we're at the start of the word
+            if (currentY <= currentHighlightedWord.startY) {
+                return null;
+            }
+            return document.querySelector(`.cell[data-x="${currentX}"][data-y="${currentY - 1}"]`);
         }
-        
-        // Move to previous cell
-        const prevCoord = currentHighlightedWord.coordinates[currentIndex - 1];
-        return document.querySelector(`.cell[data-x="${prevCoord.x}"][data-y="${prevCoord.y}"]`);
     }
 
     function handleInput(event, cell) {
@@ -413,7 +451,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.removeChild(overlay);
         };
 
-        submitModalButton.onclick = () => {
+        submitModalButton.onclick = async () => {
             const name = form.querySelector('#name').value;
             const email = form.querySelector('#email').value;
             const phone = form.querySelector('#phone').value;
@@ -423,6 +461,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            // Calculate percentage of correct letters
+            let correctCount = 0;
+            const totalCells = 106; // Total non-blocked cells in the puzzle
+
+            puzzleData.cells.forEach(cell => {
+                if (!cell.isBlocked) {
+                    const userAnswer = userAnswers[`${cell.x},${cell.y}`]?.toUpperCase() || '';
+                    if (userAnswer === cell.letter.toUpperCase()) {
+                        correctCount++;
+                    }
+                }
+            });
+
+            const percentage = Math.round((correctCount / totalCells) * 100);
+
             // Prepare submission data
             const submissionData = {
                 userDetails: {
@@ -430,17 +483,35 @@ document.addEventListener('DOMContentLoaded', () => {
                     email,
                     phone
                 },
-                puzzleState: userAnswers
+                correctPercentage: percentage,
+                solutionWord: SOLUTION_COORDS.map(coord => 
+                    userAnswers[`${coord.x},${coord.y}`] || ' '
+                ).join(''),
+                submissionTime: new Date().toISOString()
             };
 
-            // TODO: Send data to backend
-            console.log('Submission data:', submissionData);
-            
-            // Close modal
-            document.body.removeChild(modal);
-            document.body.removeChild(overlay);
-            
-            alert('Kiitos vastauksesta. Menestyksekästä vuotta 2024!');
+            try {
+                const response = await fetch('https://hook.eu1.make.com/j6i1llfwbqy4euobx94y2e22gy1wjlau', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(submissionData)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                // Close modal
+                document.body.removeChild(modal);
+                document.body.removeChild(overlay);
+                
+                alert('Kiitos vastauksesta. Menestyksekästä vuotta 2024!');
+            } catch (error) {
+                console.error('Error submitting data:', error);
+                alert('Virhe vastauksen lähetyksessä. Yritä uudelleen.');
+            }
         };
     });
 

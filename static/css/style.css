@@ -5,8 +5,8 @@
     --cell-height: 92.3px;
     --primary-color: #000;
     --secondary-color: #228B22;
-    --highlight-color: rgba(196, 30, 58, 0.8);
-    --highlight-word-color: rgba(0, 123, 255, 0.2);
+    --highlight-color: rgba(0, 123, 255, 0.4);      /* More visible blue for focused cell */
+    --highlight-word-color: rgba(0, 123, 255, 0.1); /* Subtle blue for word highlight */
     --background-color: #f8f9fa;
 }
 
@@ -119,13 +119,13 @@ h1 {
 
 .cell.selected input {
     background-color: var(--highlight-color);
-    color: white;
+    color: var(--primary-color);
 }
 
 .cell input:focus {
     outline: none;
     background-color: var(--highlight-color);
-    color: white;
+    color: var(--primary-color);
 }
 
 .direction-toggle {
