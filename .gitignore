@@ -34,3 +34,15 @@ ENV/
 # OS
 .DS_Store
 Thumbs.db
+
+# Node.js
+node_modules/
+package-lock.json
+
+# Test artifacts
+coverage/
+.pytest_cache/
+playwright-report/
+test-results/
+*.pyc
+__pycache__/

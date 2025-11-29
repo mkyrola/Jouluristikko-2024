@@ -1,0 +1,24 @@
+{
+  "name": "seemoto-jouluristikko-2024",
+  "version": "1.0.0",
+  "description": "Seemoto Christmas Crossword Puzzle 2024",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:all": "npm run test && npm run test:e2e"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@testing-library/dom": "^9.3.0",
+    "@testing-library/jest-dom": "^6.1.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
+  },
+  "keywords": ["crossword", "puzzle", "christmas"],
+  "author": "Seemoto / MeshWorks Wireless Oy",
+  "license": "UNLICENSED",
+  "private": true
+}
