@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     let puzzleData = null;
-    let selectedCell = null;
     let userAnswers = {};
     let lastClickedCell = null;
     let isSolutionCorrect = false;
@@ -26,16 +25,19 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('../data/puzzle2024.json')
         .then(response => response.json())
         .then(data => {
+            // Calculate grid height from data (max Y coordinate)
+            const maxY = Math.max(...data.cells.map(c => c.y));
+            
             // Transform coordinates from bottom-left to top-left
             data.cells = data.cells.map(cell => ({
                 ...cell,
                 x: cell.x,
-                y: 11 - cell.y // Transform Y coordinate
+                y: maxY - cell.y // Transform Y coordinate
             }));
             data.words = data.words.map(word => ({
                 ...word,
                 startX: word.startX,
-                startY: 11 - word.startY, // Transform Y coordinate for words too
+                startY: maxY - word.startY, // Transform Y coordinate for words too
                 direction: word.direction.toLowerCase() // Ensure consistent case
             }));
             puzzleData = data;
@@ -278,14 +280,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function isPointInWord(x, y, word) {
-        if (word.direction === 'across') {
-            return x >= word.startX && x < word.startX + word.length && y === word.startY;
-        } else {
-            return x === word.startX && y >= word.startY && y < word.startY + word.length;
-        }
-    }
-
     // Helper function to calculate total non-blocked cells
     function getTotalCells() {
         return puzzleData.cells.filter(c => !c.isBlocked && c.letter.trim() !== '').length;
@@ -298,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalCells = getTotalCells();
 
         puzzleData.cells.forEach(cell => {
-            if (!cell.isBlocked) {
+            if (!cell.isBlocked && cell.letter.trim() !== '') {
                 const userAnswer = userAnswers[`${cell.x},${cell.y}`]?.toUpperCase() || '';
                 if (userAnswer === cell.letter.toUpperCase()) {
                     correctCount++;
@@ -347,13 +341,9 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.cell input').forEach(input => {
                 input.value = '';
             });
-            document.querySelectorAll('.cell').forEach(cell => {
-                cell.classList.remove('correct', 'incorrect', 'word-highlight');
+            document.querySelectorAll('.cell').forEach(cellEl => {
+                cellEl.classList.remove('correct', 'incorrect', 'word-highlight', 'selected');
             });
-            if (selectedCell) {
-                selectedCell.classList.remove('selected');
-                selectedCell = null;
-            }
             // Reset solution check state
             submitButton.disabled = true;
             isSolutionCorrect = false;

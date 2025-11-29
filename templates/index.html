@@ -15,12 +15,12 @@
         
         <div class="puzzle-container">
             <div class="puzzle-wrapper">
-                <div class="controls">
-                    <button id="instructions-button">Ohjeet</button>
-                    <button id="check-button">Tarkista ristikko</button>
-                    <button id="check-solution-button">Tarkista ratkaisusana</button>
-                    <button id="clear-button">Tyhjennä ristikko</button>
-                    <button id="submit-button">Lähetä vastaus</button>
+                <div class="controls" role="toolbar" aria-label="Ristikon toiminnot">
+                    <button type="button" id="instructions-button" aria-label="Näytä ohjeet">Ohjeet</button>
+                    <button type="button" id="check-button" aria-label="Tarkista ristikon vastaukset">Tarkista ristikko</button>
+                    <button type="button" id="check-solution-button" aria-label="Tarkista ratkaisusana">Tarkista ratkaisusana</button>
+                    <button type="button" id="clear-button" aria-label="Tyhjennä kaikki vastaukset">Tyhjennä ristikko</button>
+                    <button type="button" id="submit-button" aria-label="Lähetä vastaus arvontaan">Lähetä vastaus</button>
                 </div>
                 
                 <img src="{{ url_for('serve_image', filename='image.jpg') }}?v=2024" alt="Puzzle Background" class="puzzle-image">
