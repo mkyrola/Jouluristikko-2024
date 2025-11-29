@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectedCell = null;
     let userAnswers = {};
     let lastClickedCell = null;
-    let lastDirection = null;
     let isSolutionCorrect = false;
     let currentHighlightedWord = null;
 
@@ -11,20 +10,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitButton = document.getElementById('submit-button');
     submitButton.disabled = true;
 
-    // Load saved state from localStorage
-    const savedState = localStorage.getItem('puzzleState');
-    if (savedState) {
-        userAnswers = JSON.parse(savedState);
+    // Load saved state from localStorage with error handling
+    try {
+        const savedState = localStorage.getItem('puzzleState');
+        if (savedState) {
+            userAnswers = JSON.parse(savedState);
+        }
+    } catch (e) {
+        // Clear corrupted state
+        localStorage.removeItem('puzzleState');
+        userAnswers = {};
     }
-
-    // Clear any old puzzle state
-    localStorage.removeItem('puzzleState');
 
     // Fetch puzzle data
     fetch('/api/puzzle')
         .then(response => response.json())
         .then(data => {
-            console.log('Raw puzzle data:', data);
             // Transform coordinates from bottom-left to top-left
             data.cells = data.cells.map(cell => ({
                 ...cell,
@@ -37,51 +38,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 startY: 11 - word.startY, // Transform Y coordinate for words too
                 direction: word.direction.toLowerCase() // Ensure consistent case
             }));
-            console.log('First cell after transform:', data.cells[0]);
-            console.log('First word after transform:', data.words[0]);
             puzzleData = data;
             initializePuzzle();
         })
         .catch(error => {
-            console.error('Error loading puzzle:', error);
+            document.getElementById('crossword-grid').innerHTML = 
+                '<p style="color:red;padding:20px;">Virhe ristikon latauksessa. Lataa sivu uudelleen.</p>';
         });
 
-    // Solution word coordinates
+    // Solution word coordinates (obfuscated for security)
     const SOLUTION_COORDS = [
-        {x: 7, y: 0},   // S
-        {x: 3, y: 2},   // I
-        {x: 8, y: 2},   // N
-        {x: 4, y: 5},   // A
-        {x: 6, y: 6},   // P
-        {x: 0, y: 8},   // P
-        {x: 9, y: 11}   // I
+        {x: 7, y: 0},
+        {x: 3, y: 2},
+        {x: 8, y: 2},
+        {x: 4, y: 5},
+        {x: 6, y: 6},
+        {x: 0, y: 8},
+        {x: 9, y: 11}
     ];
-    const SOLUTION_WORD = "SINAPPI";
+    // Obfuscated solution (base64 encoded, reversed)
+    const _s = atob('SVBQQU5JUw==').split('').reverse().join('');
 
     function initializePuzzle() {
         const grid = document.getElementById('crossword-grid');
-        grid.innerHTML = ''; // Clear existing grid
-        
-        // Debug: Log dimensions in pixels
-        const puzzleImage = document.querySelector('.puzzle-image');
-        const gridElement = document.getElementById('crossword-grid');
-        console.log('Actual puzzle image width:', puzzleImage.offsetWidth + 'px');
-        console.log('Actual grid width:', gridElement.offsetWidth + 'px');
-        console.log('Grid left position:', gridElement.offsetLeft + 'px');
-        
-        // Debug: Log the dimensions of the grid
-        const maxX = Math.max(...puzzleData.cells.map(c => c.x));
-        const maxY = Math.max(...puzzleData.cells.map(c => c.y));
-        console.log(`Grid dimensions: ${maxX + 1}x${maxY + 1}`);
+        if (!grid) {
+            return;
+        }
+        grid.innerHTML = '';
         
         // Create cells
-        puzzleData.cells.forEach((cell, index) => {
-            console.log(`Creating cell ${index}:`, cell);
+        puzzleData.cells.forEach(cell => {
             const cellElement = createCell(cell);
             grid.appendChild(cellElement);
         });
-
-        console.log('Grid initialized with', puzzleData.cells.length, 'cells'); // Debug log
     }
 
     function createCell(cell) {
@@ -94,6 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const input = document.createElement('input');
             input.type = 'text';
             input.maxLength = 1;
+            input.autocomplete = 'off';
+            input.spellcheck = false;
+            input.setAttribute('inputmode', 'text');
+            input.setAttribute('pattern', '[A-Za-z]');
+            input.style.caretColor = 'transparent';
             
             // Load saved answer if exists
             const key = `${cell.x},${cell.y}`;
@@ -101,14 +95,47 @@ document.addEventListener('DOMContentLoaded', () => {
                 input.value = userAnswers[key];
             }
             
-            input.addEventListener('input', (event) => handleInput(event, cell));
-            input.addEventListener('keydown', (event) => handleKeyNavigation(event, cell));
+            // Handle character input first
+            input.addEventListener('beforeinput', function(event) {
+                if (event.data && !/^[A-Za-z]$/.test(event.data)) {
+                    event.preventDefault();
+                }
+            });
+            
+            input.addEventListener('input', function(event) {
+                if (event.target.value) {
+                    const value = event.target.value.toUpperCase();
+                    event.target.value = value;
+                    userAnswers[key] = value;
+                    localStorage.setItem('puzzleState', JSON.stringify(userAnswers));
+                    
+                    // Wait for the value to be set before moving
+                    requestAnimationFrame(() => {
+                        const nextCell = findNextCell(cell);
+                        if (nextCell) {
+                            const nextInput = nextCell.querySelector('input');
+                            if (nextInput) nextInput.focus();
+                        }
+                    });
+                } else {
+                    delete userAnswers[key];
+                    localStorage.setItem('puzzleState', JSON.stringify(userAnswers));
+                }
+            });
+            
+            // Handle navigation after input is processed
+            input.addEventListener('keydown', function(event) {
+                if (event.key === 'ArrowLeft' || event.key === 'ArrowRight' || 
+                    (event.key === 'Backspace' && !event.target.value)) {
+                    handleKeyNavigation(event, cell);
+                }
+            });
+            
             cellElement.appendChild(input);
             
             // Add click handler to cell
             cellElement.addEventListener('click', (event) => {
                 handleCellClick(event, cell);
-                // Focus the input after handling the click
                 input.focus();
             });
         }
@@ -116,21 +143,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (cell.isBlocked) {
             cellElement.classList.add('blocked');
         }
-
-        // Debug: Calculate and log cell dimensions
-        const puzzleWidth = document.querySelector('.puzzle-image').offsetWidth;
-        const cellBaseWidth = puzzleWidth / 12;
-        const currentLeft = puzzleWidth * (cell.x + 2) / 12;
-        console.log(`Cell ${cell.x}: Expected width=${cellBaseWidth}px, left=${currentLeft}px`);
         
-        // Position cells using pre-calculated cell width from CSS
-        cellElement.style.left = `calc(var(--cell-base-width) * (${cell.x + 2}))`;
-        cellElement.style.top = `calc(var(--cell-height) * ${cell.y})`;
-
-        // Debug: Log actual cell dimensions after positioning
-        setTimeout(() => {
-            console.log(`Cell ${cell.x}: Actual width=${cellElement.offsetWidth}px, left=${cellElement.offsetLeft}px`);
-        }, 0);
+        cellElement.style.left = `${cell.x * 10}%`;  // Each cell is 10% wide
+        cellElement.style.top = `${cell.y * 8.33}%`;  // Each cell is 1/12 of height
 
         return cellElement;
     }
@@ -139,32 +154,28 @@ document.addEventListener('DOMContentLoaded', () => {
         const x = cell.x;
         const y = cell.y;
 
-        console.log('Click at:', x, y); // Debug log
+        // Clear previous highlights
+        document.querySelectorAll('.cell').forEach(cellEl => {
+            cellEl.classList.remove('word-highlight');
+            cellEl.classList.remove('selected');
+        });
+
+        // Add selected class to clicked cell
+        const clickedCellElement = document.querySelector(`.cell[data-x="${x}"][data-y="${y}"]`);
+        if (clickedCellElement) {
+            clickedCellElement.classList.add('selected');
+        }
 
         // Find words that contain this cell
         const wordsAtPoint = puzzleData.words.filter(word => {
             if (word.direction === 'across') {
-                const isInWord = y === word.startY && x >= word.startX && x < (word.startX + word.length);
-                console.log('Checking across word:', word.wordindex, isInWord); // Debug log
-                return isInWord;
+                return y === word.startY && x >= word.startX && x < (word.startX + word.length);
             } else { // down
-                const isInWord = x === word.startX && y >= word.startY && y < (word.startY + word.length);
-                console.log('Checking down word:', word.wordindex, isInWord); // Debug log
-                return isInWord;
+                return x === word.startX && y >= word.startY && y < (word.startY + word.length);
             }
         });
 
-        console.log('Words at point:', wordsAtPoint); // Debug log
-
-        if (wordsAtPoint.length === 0) {
-            console.log('No words found at point'); // Debug log
-            return;
-        }
-
-        // Clear previous highlights
-        document.querySelectorAll('.cell.word-highlight').forEach(cell => {
-            cell.classList.remove('word-highlight');
-        });
+        if (wordsAtPoint.length === 0) return;
 
         // If there's only one word or if this is a different cell, highlight first word
         if (!lastClickedCell || wordsAtPoint.length === 1 || 
@@ -176,16 +187,13 @@ document.addEventListener('DOMContentLoaded', () => {
             currentHighlightedWord = wordsAtPoint[(currentIndex + 1) % wordsAtPoint.length];
         }
 
-        console.log('Current highlighted word:', currentHighlightedWord); // Debug log
-
         // Highlight the current word
         if (currentHighlightedWord.direction === 'across') {
             for (let i = 0; i < currentHighlightedWord.length; i++) {
                 const cellToHighlight = document.querySelector(
                     `.cell[data-x="${currentHighlightedWord.startX + i}"][data-y="${currentHighlightedWord.startY}"]`
                 );
-                if (cellToHighlight) {
-                    console.log('Highlighting cell:', currentHighlightedWord.startX + i, currentHighlightedWord.startY);
+                if (cellToHighlight && cellToHighlight !== clickedCellElement) {
                     cellToHighlight.classList.add('word-highlight');
                 }
             }
@@ -194,20 +202,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const cellToHighlight = document.querySelector(
                     `.cell[data-x="${currentHighlightedWord.startX}"][data-y="${currentHighlightedWord.startY + i}"]`
                 );
-                if (cellToHighlight) {
-                    console.log('Highlighting cell:', currentHighlightedWord.startX, currentHighlightedWord.startY + i);
+                if (cellToHighlight && cellToHighlight !== clickedCellElement) {
                     cellToHighlight.classList.add('word-highlight');
                 }
             }
         }
 
         lastClickedCell = { x, y };
-        
-        // Focus the input
-        const input = event.target.querySelector('input') || event.target;
-        if (input.tagName === 'INPUT') {
-            input.focus();
-        }
     }
 
     function findNextCell(currentCell) {
@@ -252,35 +253,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function handleInput(event, cell) {
-        const value = event.target.value.toUpperCase();
-        event.target.value = value;
-        
-        const key = `${cell.x},${cell.y}`;
-        if (value.length > 0) {
-            userAnswers[key] = value[0];
-            console.log(`Stored answer at ${key}:`, {
-                value: value[0],
-                cell: cell,
-                allAnswers: userAnswers
-            });
-            
-            // Move to next cell if there's input
-            const nextCell = findNextCell(cell);
-            if (nextCell) {
-                const input = nextCell.querySelector('input');
-                if (input) {
-                    input.focus();
-                }
-            }
-        } else {
-            delete userAnswers[key];
-            console.log(`Cleared answer at ${key}`);
-        }
-        
-        localStorage.setItem('puzzleState', JSON.stringify(userAnswers));
-    }
-
     function handleKeyNavigation(event, cell) {
         if (event.key === 'Backspace' && !event.target.value) {
             event.preventDefault();
@@ -289,10 +261,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 const input = prevCell.querySelector('input');
                 if (input) {
                     input.focus();
-                    input.value = '';
-                    userAnswers[`${cell.x},${cell.y}`] = '';
-                    localStorage.setItem('puzzleState', JSON.stringify(userAnswers));
                 }
+            }
+        } else if (event.key === 'ArrowLeft') {
+            const prevCell = findPrevCell(cell);
+            if (prevCell) {
+                const input = prevCell.querySelector('input');
+                if (input) input.focus();
+            }
+        } else if (event.key === 'ArrowRight') {
+            const nextCell = findNextCell(cell);
+            if (nextCell) {
+                const input = nextCell.querySelector('input');
+                if (input) input.focus();
             }
         }
     }
@@ -305,11 +286,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Helper function to calculate total non-blocked cells
+    function getTotalCells() {
+        return puzzleData.cells.filter(c => !c.isBlocked && c.letter.trim() !== '').length;
+    }
+
     // Button event listeners
     document.getElementById('check-button').addEventListener('click', () => {
         // Calculate percentage of correct letters
         let correctCount = 0;
-        const totalCells = 106; // Total non-blocked cells in the puzzle
+        const totalCells = getTotalCells();
 
         puzzleData.cells.forEach(cell => {
             if (!cell.isBlocked) {
@@ -334,37 +320,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('check-solution-button').addEventListener('click', () => {
-        console.log('Checking solution word...');
-        console.log('Current userAnswers:', userAnswers);
-        console.log('Solution coordinates:', SOLUTION_COORDS);
-        
         // Get the current solution attempt
         let solutionAttempt = '';
         for (let i = 0; i < SOLUTION_COORDS.length; i++) {
             const coord = SOLUTION_COORDS[i];
             const key = `${coord.x},${coord.y}`;
             const value = userAnswers[key];
-            console.log(`Checking coordinate ${i + 1}:`, {
-                x: coord.x,
-                y: coord.y,
-                key: key,
-                value: value,
-                allAnswers: userAnswers
-            });
             solutionAttempt += (value || ' ');
         }
         
-        console.log('Final solution attempt:', solutionAttempt);
-        console.log('Expected solution:', SOLUTION_WORD);
-        
-        const solutionWordCorrect = solutionAttempt.toUpperCase() === SOLUTION_WORD;
+        const solutionWordCorrect = solutionAttempt.toUpperCase() === _s;
         
         if (solutionWordCorrect) {
-            alert('Ratkaisusana on oikein eli SINAPPI');
+            alert('Ratkaisusana on oikein!');
             submitButton.disabled = false;
             isSolutionCorrect = true;
         } else {
-            alert(`Ratkaisusana on väärin, tarkista ristikko\nArvaus: ${solutionAttempt}`);
+            alert('Ratkaisusana on väärin, tarkista ristikko');
         }
     });
 
@@ -391,14 +363,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function checkSolutionWord() {
         // Get the letters from the specific coordinates
         const letters = SOLUTION_COORDS.map(coord => {
-            const letter = userAnswers[`${coord.x},${coord.y}`] || '';
-            console.log(`Checking coord (${coord.x},${coord.y}): ${letter}`); // Debug log
-            return letter;
+            return userAnswers[`${coord.x},${coord.y}`] || '';
         }).join('');
         
-        console.log('Current solution word:', letters); // Debug log
-        console.log('Expected solution word:', SOLUTION_WORD); // Debug log
-        return letters.toUpperCase() === SOLUTION_WORD;
+        return letters.toUpperCase() === _s;
     }
 
     document.getElementById('submit-button').addEventListener('click', () => {
@@ -486,10 +454,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Calculate percentage of correct letters
             let correctCount = 0;
-            const totalCells = 106; // Total non-blocked cells in the puzzle
+            const totalCells = getTotalCells();
 
             puzzleData.cells.forEach(cell => {
-                if (!cell.isBlocked) {
+                if (!cell.isBlocked && cell.letter.trim() !== '') {
                     const userAnswer = userAnswers[`${cell.x},${cell.y}`]?.toUpperCase() || '';
                     if (userAnswer === cell.letter.toUpperCase()) {
                         correctCount++;
@@ -500,6 +468,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const percentage = Math.round((correctCount / totalCells) * 100);
 
             // Prepare submission data
+            // NOTE: Webhook URL is exposed in client-side code. For production,
+            // consider using a backend proxy to hide the actual endpoint.
             const submissionData = {
                 userDetails: {
                     name,
@@ -531,9 +501,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.body.removeChild(modal);
                 document.body.removeChild(overlay);
                 
-                alert('Kiitos vastauksesta. Menestyksekästä vuotta 2024!');
+                alert('Kiitos vastauksesta. Menestyksekästä vuotta 2025!');
             } catch (error) {
-                console.error('Error submitting data:', error);
                 alert('Virhe vastauksen lähetyksessä. Yritä uudelleen.');
             }
         };
