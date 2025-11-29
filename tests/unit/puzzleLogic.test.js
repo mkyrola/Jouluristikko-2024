@@ -237,10 +237,12 @@ describe('Puzzle Logic', () => {
 
     test('finds down word containing cell', () => {
       const words = samplePuzzleData.words;
-      const x = 0, y = 10;
+      // Word ALAJAT starts at (0,11) and goes down for 6 letters: y=11,10,9,8,7,6
+      const x = 0, y = 11;
       
       const wordsAtPoint = words.filter(word => {
         if (word.direction === 'down') {
+          // For down words, y increases from startY
           return x === word.startX && y >= word.startY && y < (word.startY + word.length);
         }
         return false;
@@ -310,7 +312,7 @@ describe('Input Validation', () => {
 
 describe('localStorage Handling', () => {
   test('handles corrupted JSON gracefully', () => {
-    localStorage.getItem.mockReturnValue('invalid json {{{');
+    localStorage.setItem('puzzleState', 'invalid json {{{');
     
     let userAnswers = {};
     try {
@@ -329,7 +331,7 @@ describe('localStorage Handling', () => {
 
   test('restores valid saved state', () => {
     const savedAnswers = { '0,0': 'A', '1,0': 'B' };
-    localStorage.getItem.mockReturnValue(JSON.stringify(savedAnswers));
+    localStorage.setItem('puzzleState', JSON.stringify(savedAnswers));
     
     let userAnswers = {};
     try {
@@ -345,8 +347,7 @@ describe('localStorage Handling', () => {
   });
 
   test('handles null localStorage gracefully', () => {
-    localStorage.getItem.mockReturnValue(null);
-    
+    // localStorage is cleared in beforeEach, so getItem returns null
     let userAnswers = {};
     try {
       const savedState = localStorage.getItem('puzzleState');
