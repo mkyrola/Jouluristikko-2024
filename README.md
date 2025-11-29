@@ -1,39 +1,61 @@
-# Seemoto Christmas Crossword 2024
+# Seemoto Jouluristikko 2024
 
-A Christmas-themed crossword puzzle application for Seemoto's 2024 holiday season.
+🎄 Interactive Finnish Christmas crossword puzzle for Seemoto's 2024 holiday campaign.
+
+> **See [PROJECT_DOCUMENTATION.md](PROJECT_DOCUMENTATION.md) for comprehensive details about the project, features, and architecture.**
+
+## Quick Start
+
+### Production (Netlify)
+The app is deployed automatically from the `dist/` folder on push to `master`.
+
+### Local Development (Flask)
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Run Flask server
+python src/crossword.py
+
+# Open http://localhost:5000
+```
 
 ## Project Structure
+
 ```
-├── README.md
-├── requirements.txt
-├── public/
-│   ├── data/
-│   │   └── puzzle2024.json    # Add your puzzle JSON here
-│   └── images/
-│       └── puzzle.jpg         # Add your puzzle image here
+├── dist/                 # Production build (Netlify)
+│   ├── css/style.css
+│   ├── js/main.js
+│   ├── data/puzzle2024.json
+│   ├── images/image.jpg
+│   └── index.html
 ├── src/
-│   ├── __init__.py
-│   ├── crossword.py
-│   └── puzzle_data.py
-├── static/
-│   ├── css/
-│   │   └── style.css
-│   └── js/
-│       └── main.js
-└── templates/
-    └── index.html
+│   └── crossword.py      # Flask backend (dev only)
+├── static/               # Source files
+│   ├── css/style.css
+│   └── js/main.js
+├── templates/
+│   └── index.html        # Flask template
+├── netlify.toml
+└── requirements.txt
 ```
 
-## Setup
-1. Add your puzzle files:
-   - Place your puzzle JSON file as `public/data/puzzle2024.json`
-   - Place your puzzle image as `public/images/puzzle.jpg`
+## Features
 
-2. Install the required dependencies:
-```bash
-pip install -r requirements.txt
-```
+- 🧩 35-word Finnish crossword puzzle
+- 🔤 Hidden solution word: 7 letters
+- 💾 Progress saved to localStorage
+- 📱 Responsive design
+- 📧 Submission form with webhook integration
 
-3. Run the application:
-```bash
-python src/crossword.py
+## Tech Stack
+
+- **Frontend**: Vanilla JS, HTML5, CSS3
+- **Backend (dev)**: Flask
+- **Deployment**: Netlify
+- **Webhook**: Make.com
+
+---
+
+*Seemoto / MeshWorks Wireless Oy - Finland*
