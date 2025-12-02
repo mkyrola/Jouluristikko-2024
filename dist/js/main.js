@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
             input.autocomplete = 'off';
             input.spellcheck = false;
             input.setAttribute('inputmode', 'text');
-            input.setAttribute('pattern', '[A-Za-z]');
+            input.setAttribute('pattern', '[A-Za-zÄÖÅäöå]');
             input.style.caretColor = 'transparent';
             
             // Load saved answer if exists
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Handle character input first
             input.addEventListener('beforeinput', function(event) {
-                if (event.data && !/^[A-Za-z]$/.test(event.data)) {
+                if (event.data && !/^[A-Za-zÄÖÅäöå]$/.test(event.data)) {
                     event.preventDefault();
                 }
             });
@@ -130,6 +130,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (event.key === 'ArrowLeft' || event.key === 'ArrowRight' || 
                     (event.key === 'Backspace' && !event.target.value)) {
                     handleKeyNavigation(event, cell);
+                }
+                
+                // If cell already has a value and user types a letter, replace and move
+                if (event.target.value && /^[A-Za-zÄÖÅäöå]$/.test(event.key)) {
+                    event.preventDefault();
+                    const newValue = event.key.toUpperCase();
+                    event.target.value = newValue;
+                    userAnswers[key] = newValue;
+                    localStorage.setItem('puzzleState', JSON.stringify(userAnswers));
+                    
+                    // Move to next cell
+                    requestAnimationFrame(() => {
+                        const nextCell = findNextCell(cell);
+                        if (nextCell) {
+                            const nextInput = nextCell.querySelector('input');
+                            if (nextInput) nextInput.focus();
+                        }
+                    });
                 }
             });
             
@@ -219,19 +237,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentX = parseInt(currentCell.x);
         const currentY = parseInt(currentCell.y);
         
+        let nextCell;
         if (currentHighlightedWord.direction === 'across') {
-            // Check if we're at the end of the word
-            if (currentX >= currentHighlightedWord.startX + currentHighlightedWord.length - 1) {
-                return null;
-            }
-            return document.querySelector(`.cell[data-x="${currentX + 1}"][data-y="${currentY}"]`);
+            // Find next cell in horizontal direction (no word boundary check)
+            nextCell = document.querySelector(`.cell[data-x="${currentX + 1}"][data-y="${currentY}"]`);
         } else {
-            // Check if we're at the end of the word
-            if (currentY >= currentHighlightedWord.startY + currentHighlightedWord.length - 1) {
-                return null;
-            }
-            return document.querySelector(`.cell[data-x="${currentX}"][data-y="${currentY + 1}"]`);
+            // Find next cell in vertical direction (no word boundary check)
+            nextCell = document.querySelector(`.cell[data-x="${currentX}"][data-y="${currentY + 1}"]`);
         }
+        
+        // Return next cell only if it exists and has an input (is not blocked)
+        if (nextCell && nextCell.querySelector('input')) {
+            return nextCell;
+        }
+        return null;
     }
 
     function findPrevCell(currentCell) {
@@ -240,19 +259,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentX = parseInt(currentCell.x);
         const currentY = parseInt(currentCell.y);
         
+        let prevCell;
         if (currentHighlightedWord.direction === 'across') {
-            // Check if we're at the start of the word
-            if (currentX <= currentHighlightedWord.startX) {
-                return null;
-            }
-            return document.querySelector(`.cell[data-x="${currentX - 1}"][data-y="${currentY}"]`);
+            // Find previous cell in horizontal direction (no word boundary check)
+            prevCell = document.querySelector(`.cell[data-x="${currentX - 1}"][data-y="${currentY}"]`);
         } else {
-            // Check if we're at the start of the word
-            if (currentY <= currentHighlightedWord.startY) {
-                return null;
-            }
-            return document.querySelector(`.cell[data-x="${currentX}"][data-y="${currentY - 1}"]`);
+            // Find previous cell in vertical direction (no word boundary check)
+            prevCell = document.querySelector(`.cell[data-x="${currentX}"][data-y="${currentY - 1}"]`);
         }
+        
+        // Return previous cell only if it exists and has an input (is not blocked)
+        if (prevCell && prevCell.querySelector('input')) {
+            return prevCell;
+        }
+        return null;
     }
 
     function handleKeyNavigation(event, cell) {

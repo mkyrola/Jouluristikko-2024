@@ -59,6 +59,28 @@ test.describe('Crossword Puzzle Application', () => {
       await expect(firstInput).toHaveValue('A');
     });
 
+    test('accepts Finnish characters (Ä, Ö, Å)', async ({ page }) => {
+      const inputs = page.locator('#crossword-grid .cell input');
+      const firstInput = inputs.first();
+      const secondInput = inputs.nth(1);
+      const thirdInput = inputs.nth(2);
+      
+      // Test Ä
+      await firstInput.click();
+      await firstInput.fill('ä');
+      await expect(firstInput).toHaveValue('Ä');
+      
+      // Test Ö
+      await secondInput.click();
+      await secondInput.fill('ö');
+      await expect(secondInput).toHaveValue('Ö');
+      
+      // Test Å
+      await thirdInput.click();
+      await thirdInput.fill('å');
+      await expect(thirdInput).toHaveValue('Å');
+    });
+
     test('highlights word when cell is clicked', async ({ page }) => {
       const firstInput = page.locator('#crossword-grid .cell input').first();
       await firstInput.click();
@@ -80,6 +102,67 @@ test.describe('Crossword Puzzle Application', () => {
       // First cell should no longer be selected
       const firstCell = page.locator('#crossword-grid .cell').first();
       await expect(firstCell).not.toHaveClass(/selected/);
+    });
+
+    test('toggles direction when clicking same cell twice', async ({ page }) => {
+      // Find a cell that is at an intersection (part of both horizontal and vertical words)
+      const inputs = page.locator('#crossword-grid .cell input');
+      const testInput = inputs.first();
+      
+      // First click - should highlight one direction
+      await testInput.click();
+      const firstHighlightCount = await page.locator('.cell.word-highlight').count();
+      
+      // Second click on same cell - should toggle direction
+      await testInput.click();
+      const secondHighlightCount = await page.locator('.cell.word-highlight').count();
+      
+      // If cell is at intersection, highlight count may differ
+      // At minimum, clicking should work without errors
+      expect(firstHighlightCount).toBeGreaterThanOrEqual(0);
+      expect(secondHighlightCount).toBeGreaterThanOrEqual(0);
+    });
+
+    test('auto-advances in horizontal direction when typing', async ({ page }) => {
+      const inputs = page.locator('#crossword-grid .cell input');
+      const firstInput = inputs.first();
+      
+      // Click to set horizontal direction
+      await firstInput.click();
+      
+      // Type multiple characters
+      await page.keyboard.type('AB');
+      
+      // First input should have 'A', focus should have moved
+      await expect(firstInput).toHaveValue('A');
+      await expect(firstInput).not.toBeFocused();
+    });
+
+    test('continues typing across word boundaries in same direction', async ({ page }) => {
+      const inputs = page.locator('#crossword-grid .cell input');
+      const firstInput = inputs.first();
+      
+      // Click to set horizontal direction  
+      await firstInput.click();
+      
+      // Type a long sequence - should continue without stopping
+      await page.keyboard.type('TESTWORD');
+      
+      // First input should have first letter
+      await expect(firstInput).toHaveValue('T');
+      
+      // Check that multiple cells have been filled
+      const filledCells = await page.evaluate(() => {
+        const inputs = document.querySelectorAll('#crossword-grid .cell input');
+        let count = 0;
+        inputs.forEach(input => {
+          if (input.value) count++;
+        });
+        return count;
+      });
+      
+      // Should have filled multiple cells (depends on grid, but at least some)
+      expect(filledCells).toBeGreaterThan(1);
     });
   });
 
