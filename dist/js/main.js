@@ -5,9 +5,36 @@ document.addEventListener('DOMContentLoaded', () => {
     let isSolutionCorrect = false;
     let currentHighlightedWord = null;
 
+    // Zoom settings
+    const MIN_ZOOM = 80;
+    const MAX_ZOOM = 150;
+    const ZOOM_STEP = 10;
+    let currentZoom = parseInt(localStorage.getItem('puzzleZoom')) || 100;
+
     // Disable submit button initially
     const submitButton = document.getElementById('submit-button');
     submitButton.disabled = true;
+
+    // Initialize zoom
+    const puzzleWrapper = document.querySelector('.puzzle-wrapper');
+    const zoomLevelDisplay = document.getElementById('zoom-level');
+    applyZoom(currentZoom);
+
+    function applyZoom(level) {
+        currentZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, level));
+        puzzleWrapper.style.transform = `scale(${currentZoom / 100})`;
+        puzzleWrapper.style.transformOrigin = 'top center';
+        zoomLevelDisplay.textContent = `${currentZoom}%`;
+        localStorage.setItem('puzzleZoom', currentZoom);
+    }
+
+    document.getElementById('zoom-in-button').addEventListener('click', () => {
+        applyZoom(currentZoom + ZOOM_STEP);
+    });
+
+    document.getElementById('zoom-out-button').addEventListener('click', () => {
+        applyZoom(currentZoom - ZOOM_STEP);
+    });
 
     // Load saved state from localStorage with error handling
     try {
@@ -128,6 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Handle navigation after input is processed
             input.addEventListener('keydown', function(event) {
                 if (event.key === 'ArrowLeft' || event.key === 'ArrowRight' || 
+                    event.key === 'ArrowUp' || event.key === 'ArrowDown' ||
                     (event.key === 'Backspace' && !event.target.value)) {
                     handleKeyNavigation(event, cell);
                 }
@@ -285,13 +313,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     input.focus();
                 }
             }
-        } else if (event.key === 'ArrowLeft') {
+        } else if ((currentHighlightedWord?.direction === 'across' && event.key === 'ArrowLeft') ||
+                   (currentHighlightedWord?.direction === 'down' && event.key === 'ArrowUp')) {
+            event.preventDefault();
             const prevCell = findPrevCell(cell);
             if (prevCell) {
                 const input = prevCell.querySelector('input');
                 if (input) input.focus();
             }
-        } else if (event.key === 'ArrowRight') {
+        } else if ((currentHighlightedWord?.direction === 'across' && event.key === 'ArrowRight') ||
+                   (currentHighlightedWord?.direction === 'down' && event.key === 'ArrowDown')) {
+            event.preventDefault();
             const nextCell = findNextCell(cell);
             if (nextCell) {
                 const input = nextCell.querySelector('input');
