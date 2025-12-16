@@ -101,7 +101,7 @@ exports.handler = async (event, context) => {
         // Get client IP
         const clientIp = event.headers['x-forwarded-for'] || 
                         event.headers['x-real-ip'] || 
-                        event.requestContext.identity.sourceIp || 
+                        event.requestContext?.identity?.sourceIp || 
                         'unknown';
 
         // Validate required fields
