@@ -47,11 +47,14 @@ def check_rate_limit(ip, email):
     if email.lower() in _submission_cache['emails']:
         return False, f"Sähköpostiosoitteella on jo lähetetty vastaus."
     
-    # Record this submission
+    # Don't record yet - just check if allowed
+    return True, None
+
+def record_submission(ip, email):
+    """Record a successful submission for rate limiting"""
+    now = datetime.now()
     _submission_cache['ips'][ip] = now
     _submission_cache['emails'][email.lower()] = now
-    
-    return True, None
 
 # Add path to public directory
 PUBLIC_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'public')
@@ -131,6 +134,8 @@ def submit_solution():
         ticket = zoho_api.create_ticket(ticket_data)
         
         if ticket:
+            # Record successful submission for rate limiting
+            record_submission(client_ip, email)
             return jsonify({
                 'success': True,
                 'message': 'Ticket created successfully',

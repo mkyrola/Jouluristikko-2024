@@ -9,11 +9,13 @@
     "test:e2e": "playwright test",
     "test:e2e:headed": "playwright test --headed",
     "test:all": "npm run test && npm run test:e2e",
-    "build": "npm run build:static && npm run build:public",
+    "build": "npm run build:static && npm run build:public && npm run build:templates",
     "build:static": "xcopy static\\* dist\\* /E /Y",
     "build:public": "xcopy public\\* dist\\* /E /Y",
+    "build:templates": "copy static\\index.html dist\\",
     "build:unix": "cp -r static/* dist/ && cp -r public/* dist/",
-    "dev": "python src/crossword.py"
+    "dev": "python src/crossword.py",
+    "netlify:dev": "netlify dev"
   },
   "devDependencies": {
     "@playwright/test": "^1.40.0",
@@ -22,6 +24,7 @@
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0"
   },
+  "dependencies": {},
   "keywords": ["crossword", "puzzle", "christmas"],
   "author": "Seemoto / MeshWorks Wireless Oy",
   "license": "UNLICENSED",

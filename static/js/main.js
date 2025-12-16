@@ -49,7 +49,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Fetch puzzle data
-    fetch('/api/puzzle')
+    // Check if we're on Netlify (static) or Flask (development)
+    const isNetlify = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+    const puzzleUrl = isNetlify ? '/data/puzzle2024.json' : '/api/puzzle';
+    
+    fetch(puzzleUrl)
         .then(response => response.json())
         .then(data => {
             // Calculate grid height from data (max Y coordinate)
@@ -163,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Handle character input first
             input.addEventListener('beforeinput', function(event) {
                 // Allow only Finnish letters and basic Latin letters
-                if (event.data && !/^[A-Za-zÄÖäöå]$/.test(event.data)) {
+                if (event.data && !/^[A-Za-zÄÖÅäöå]$/.test(event.data)) {
                     event.preventDefault();
                 }
             });
@@ -582,8 +586,13 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.textContent = 'Lähetetään...';
         
         try {
-            // Submit to Flask backend which will create Zoho ticket
-            const response = await fetch('/api/submit', {
+            // Check if we're on Netlify (static) or Flask (development)
+            const isNetlify = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+            
+            // Submit to appropriate endpoint
+            const submitUrl = isNetlify ? '/.netlify/functions/submit' : '/api/submit';
+            
+            const response = await fetch(submitUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

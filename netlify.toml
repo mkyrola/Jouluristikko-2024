@@ -1,5 +1,10 @@
 [build]
   publish = "dist"  # Using dist as the publish directory since that's where our static files are
+  command = "npm run build"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "18"
 
 # Redirect rule for SPA
 [[redirects]]

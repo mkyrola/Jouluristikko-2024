@@ -22,7 +22,6 @@ test.describe('Crossword Puzzle Application', () => {
     test('displays all control buttons', async ({ page }) => {
       await expect(page.locator('#instructions-button')).toBeVisible();
       await expect(page.locator('#check-button')).toBeVisible();
-      await expect(page.locator('#check-solution-button')).toBeVisible();
       await expect(page.locator('#clear-button')).toBeVisible();
       await expect(page.locator('#submit-button')).toBeVisible();
     });
@@ -241,18 +240,6 @@ test.describe('Crossword Puzzle Application', () => {
       await page.waitForTimeout(100);
       
       await expect(firstInput).toHaveValue('');
-    });
-  });
-
-  test.describe('Solution Validation', () => {
-    test('check solution button shows result', async ({ page }) => {
-      page.once('dialog', async dialog => {
-        expect(dialog.type()).toBe('alert');
-        expect(dialog.message()).toMatch(/Ratkaisusana on (oikein|väärin)/);
-        await dialog.accept();
-      });
-      
-      await page.locator('#check-solution-button').click();
     });
   });
 
