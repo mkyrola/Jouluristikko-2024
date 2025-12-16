@@ -8,7 +8,12 @@
     "test:coverage": "jest --coverage",
     "test:e2e": "playwright test",
     "test:e2e:headed": "playwright test --headed",
-    "test:all": "npm run test && npm run test:e2e"
+    "test:all": "npm run test && npm run test:e2e",
+    "build": "npm run build:static && npm run build:public",
+    "build:static": "xcopy static\\* dist\\* /E /Y",
+    "build:public": "xcopy public\\* dist\\* /E /Y",
+    "build:unix": "cp -r static/* dist/ && cp -r public/* dist/",
+    "dev": "python src/crossword.py"
   },
   "devDependencies": {
     "@playwright/test": "^1.40.0",

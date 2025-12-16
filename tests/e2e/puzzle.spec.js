@@ -11,7 +11,7 @@ test.describe('Crossword Puzzle Application', () => {
 
   test.describe('Page Load', () => {
     test('loads the puzzle page', async ({ page }) => {
-      await expect(page).toHaveTitle('Seemoto Jouluristikko 2024');
+      await expect(page).toHaveTitle('Seemoto Jouluristikko 2025');
     });
 
     test('displays the puzzle image', async ({ page }) => {

@@ -110,7 +110,8 @@
       "startY": 11,
       "length": 5,
       "direction": "down",
-      "answer": "SIIKA"
+      "answer": "SIIKA",
+      "ratkaisusana": true
     },
     {
       "wordindex": 15,

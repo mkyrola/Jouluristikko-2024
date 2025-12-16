@@ -39,6 +39,12 @@ Thumbs.db
 node_modules/
 package-lock.json
 
+# Environment variables
+.env
+
+# Build output
+dist/
+
 # Test artifacts
 coverage/
 .pytest_cache/

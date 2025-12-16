@@ -1,5 +1,5 @@
 """
-Flask API Tests for Seemoto Jouluristikko 2024
+Flask API Tests for Seemoto Jouluristikko 2025
 Tests all Flask endpoints and error handling
 """
 
@@ -44,7 +44,7 @@ class TestIndexRoute:
     def test_index_contains_title(self, client):
         """Index should contain the puzzle title"""
         response = client.get('/')
-        assert b'Seemoto Jouluristikko 2024' in response.data
+        assert b'Seemoto Jouluristikko 2025' in response.data
     
     def test_index_contains_buttons(self, client):
         """Index should contain control buttons"""

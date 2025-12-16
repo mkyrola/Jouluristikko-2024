@@ -68,6 +68,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 direction: word.direction.toLowerCase() // Ensure consistent case
             }));
             puzzleData = data;
+            
+            // Calculate solution coordinates after data is loaded and transformed
+            calculateSolutionCoordinates(puzzleData);
+            
             initializePuzzle();
         })
         .catch(error => {
@@ -75,18 +79,49 @@ document.addEventListener('DOMContentLoaded', () => {
                 '<p style="color:red;padding:20px;">Virhe ristikon latauksessa. Lataa sivu uudelleen.</p>';
         });
 
-    // Solution word coordinates (obfuscated for security)
-    const SOLUTION_COORDS = [
-        {x: 7, y: 0},
-        {x: 3, y: 2},
-        {x: 8, y: 2},
-        {x: 4, y: 5},
-        {x: 6, y: 6},
-        {x: 0, y: 8},
-        {x: 9, y: 11}
-    ];
-    // Obfuscated solution (base64 encoded, reversed)
-    const _s = atob('SVBQQU5JUw==').split('').reverse().join('');
+    // Dynamic solution coordinates and word
+    let SOLUTION_COORDS = [];
+    let SOLUTION_WORD = '';
+    
+    // Calculate solution coordinates from the word marked as ratkaisusana
+    function calculateSolutionCoordinates(puzzleData) {
+        if (!puzzleData || !puzzleData.words) {
+            SOLUTION_COORDS = [];
+            SOLUTION_WORD = '';
+            return;
+        }
+        
+        // Find the word marked as ratkaisusana
+        const solutionWordObj = puzzleData.words.find(word => word.ratkaisusana === true);
+        if (!solutionWordObj) {
+            SOLUTION_COORDS = [];
+            SOLUTION_WORD = '';
+            return;
+        }
+        
+        // Calculate coordinates for each letter in the solution word
+        SOLUTION_WORD = solutionWordObj.answer;
+        SOLUTION_COORDS = [];
+        
+        for (let i = 0; i < solutionWordObj.length; i++) {
+            let x = solutionWordObj.startX;
+            let y = solutionWordObj.startY;
+            
+            // Adjust position based on direction
+            if (solutionWordObj.direction === 'down') {
+                y = solutionWordObj.startY + i; // Going down in original coordinates (after transform)
+            } else {
+                x = solutionWordObj.startX + i; // Going across
+            }
+            
+            SOLUTION_COORDS.push({ x, y });
+        }
+    }
+    
+    // Get the solution word (for backward compatibility)
+    function getSolutionWord() {
+        return SOLUTION_WORD;
+    }
 
     function initializePuzzle() {
         const grid = document.getElementById('crossword-grid');
@@ -121,19 +156,26 @@ document.addEventListener('DOMContentLoaded', () => {
             // Load saved answer if exists
             const key = `${cell.x},${cell.y}`;
             if (userAnswers[key]) {
-                input.value = userAnswers[key];
+                // Ensure saved value is uppercase
+                input.value = userAnswers[key].toUpperCase();
             }
             
             // Handle character input first
             input.addEventListener('beforeinput', function(event) {
-                if (event.data && !/^[A-Za-zÄÖÅäöå]$/.test(event.data)) {
+                // Allow only Finnish letters and basic Latin letters
+                if (event.data && !/^[A-Za-zÄÖäöå]$/.test(event.data)) {
                     event.preventDefault();
                 }
             });
             
             input.addEventListener('input', function(event) {
                 if (event.target.value) {
-                    const value = event.target.value.toUpperCase();
+                    // Always convert to uppercase and validate
+                    let value = event.target.value.toUpperCase();
+                    // Only allow Finnish letters and basic Latin letters
+                    value = value.replace(/[^A-ZÄÖÅ]/g, '');
+                    // Ensure only one character
+                    value = value.slice(0, 1);
                     event.target.value = value;
                     userAnswers[key] = value;
                     localStorage.setItem('puzzleState', JSON.stringify(userAnswers));
@@ -365,26 +407,7 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     });
 
-    document.getElementById('check-solution-button').addEventListener('click', () => {
-        // Get the current solution attempt
-        let solutionAttempt = '';
-        for (let i = 0; i < SOLUTION_COORDS.length; i++) {
-            const coord = SOLUTION_COORDS[i];
-            const key = `${coord.x},${coord.y}`;
-            const value = userAnswers[key];
-            solutionAttempt += (value || ' ');
-        }
-        
-        const solutionWordCorrect = solutionAttempt.toUpperCase() === _s;
-        
-        if (solutionWordCorrect) {
-            alert('Ratkaisusana on oikein!');
-            submitButton.disabled = false;
-            isSolutionCorrect = true;
-        } else {
-            alert('Ratkaisusana on väärin, tarkista ristikko');
-        }
-    });
+    // Remove check-solution-button event listener since button was removed
 
     document.getElementById('clear-button').addEventListener('click', () => {
         if (confirm('Haluatko varmasti tyhjentää ristikon?')) {
@@ -408,147 +431,212 @@ document.addEventListener('DOMContentLoaded', () => {
             return userAnswers[`${coord.x},${coord.y}`] || '';
         }).join('');
         
-        return letters.toUpperCase() === _s;
+        // Get solution word from the words array
+        const solutionWord = getSolutionWord();
+        return letters.toUpperCase() === solutionWord.toUpperCase();
     }
 
     document.getElementById('submit-button').addEventListener('click', () => {
         // Check if solution word is correct
         if (!checkSolutionWord()) {
-            alert('Tarkista ratkaisusana');
+            showErrorModal('Ratkaisusana on väärin, tarkista ristikko');
             return;
         }
 
-        // Create form for user details
-        const form = document.createElement('form');
-        form.innerHTML = `
-            <div style="margin: 10px 0;">
-                <label for="name">Nimi:</label><br>
-                <input type="text" id="name" required>
-            </div>
-            <div style="margin: 10px 0;">
-                <label for="email">Sähköposti:</label><br>
-                <input type="email" id="email" required>
-            </div>
-            <div style="margin: 10px 0;">
-                <label for="phone">Puhelin:</label><br>
-                <input type="tel" id="phone" required>
-            </div>
-            <div style="margin: 10px 0;">
-                <label for="organization">Yritys/Organisaatio:</label><br>
-                <input type="text" id="organization">
-            </div>
-        `;
+        // Show modern submission modal
+        showSubmissionModal();
+    });
 
-        // Show form in modal
+    function showErrorModal(message) {
+        const modal = createModal();
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message show';
+        errorDiv.textContent = message;
+        
+        modal.querySelector('.modal-header').after(errorDiv);
+        
+        const footer = modal.querySelector('.modal-footer');
+        footer.innerHTML = `
+            <button type="button" class="btn-cancel" onclick="closeModal()">Sulje</button>
+        `;
+        
+        showModal();
+    }
+
+    function showSubmissionModal() {
+        const modal = createModal();
+        
+        modal.querySelector('.modal-content').innerHTML = `
+            <div class="modal-header">
+                <h2>Lähetä vastauksesi</h2>
+                <p>Täytä tietosi alla osallistuaksesi arvontaan</p>
+            </div>
+            <div class="error-message" id="form-error"></div>
+            <form id="submission-form">
+                <div class="form-group">
+                    <label for="name">Nimi *</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Sähköposti *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Puhelin *</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="organization">Yritys/Organisaatio</label>
+                    <input type="text" id="organization" name="organization">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="closeModal()">Peruuta</button>
+                    <button type="submit" class="btn-submit">Lähetä</button>
+                </div>
+            </form>
+        `;
+        
+        // Add form submit handler
+        modal.querySelector('#submission-form').addEventListener('submit', handleFormSubmit);
+        
+        showModal();
+    }
+
+    function createModal() {
+        // Remove existing modal if any
+        const existingModal = document.querySelector('.modal-overlay');
+        if (existingModal) {
+            existingModal.remove();
+        }
+        
         const modal = document.createElement('div');
-        modal.style.cssText = `
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-            z-index: 1000;
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <!-- Content will be filled by specific modal functions -->
+            </div>
         `;
-
-        const overlay = document.createElement('div');
-        overlay.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 999;
-        `;
-
-        const submitModalButton = document.createElement('button');
-        submitModalButton.textContent = 'Lähetä';
-        submitModalButton.style.cssText = 'margin-top: 10px;';
-
-        const cancelButton = document.createElement('button');
-        cancelButton.textContent = 'Peruuta';
-        cancelButton.style.cssText = 'margin: 10px 0 0 10px;';
-
-        modal.appendChild(form);
-        modal.appendChild(submitModalButton);
-        modal.appendChild(cancelButton);
-        document.body.appendChild(overlay);
+        
         document.body.appendChild(modal);
-
-        cancelButton.onclick = () => {
-            document.body.removeChild(modal);
-            document.body.removeChild(overlay);
-        };
-
-        submitModalButton.onclick = async () => {
-            const name = form.querySelector('#name').value;
-            const email = form.querySelector('#email').value;
-            const phone = form.querySelector('#phone').value;
-            const organization = form.querySelector('#organization').value;
-
-            if (!name || !email || !phone) {
-                alert('Täytä kaikki pakolliset kentät!');
-                return;
+        
+        // Close modal when clicking overlay
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
             }
+        });
+        
+        return modal;
+    }
 
-            // Calculate percentage of correct letters
-            let correctCount = 0;
-            const totalCells = getTotalCells();
+    function showModal() {
+        const modal = document.querySelector('.modal-overlay');
+        if (modal) {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    }
 
-            puzzleData.cells.forEach(cell => {
-                if (!cell.isBlocked && cell.letter.trim() !== '') {
-                    const userAnswer = userAnswers[`${cell.x},${cell.y}`]?.toUpperCase() || '';
-                    if (userAnswer === cell.letter.toUpperCase()) {
-                        correctCount++;
-                    }
-                }
-            });
+    function closeModal() {
+        const modal = document.querySelector('.modal-overlay');
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            setTimeout(() => modal.remove(), 300);
+        }
+    }
 
-            const percentage = Math.round((correctCount / totalCells) * 100);
-
-            // Prepare submission data
-            // NOTE: Webhook URL is exposed in client-side code. For production,
-            // consider using a backend proxy to hide the actual endpoint.
-            const submissionData = {
-                userDetails: {
+    async function handleFormSubmit(e) {
+        e.preventDefault();
+        
+        const form = e.target;
+        const formData = new FormData(form);
+        const errorDiv = document.getElementById('form-error');
+        
+        // Clear previous errors
+        errorDiv.classList.remove('show');
+        errorDiv.textContent = '';
+        
+        // Validate form
+        const name = formData.get('name').trim();
+        const email = formData.get('email').trim();
+        const phone = formData.get('phone').trim();
+        
+        if (!name || !email || !phone) {
+            errorDiv.textContent = 'Täytä kaikki pakolliset kentät (merkitty tähdellä *)';
+            errorDiv.classList.add('show');
+            return;
+        }
+        
+        // Simple email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            errorDiv.textContent = 'Syötä kelvollinen sähköpostiosoite';
+            errorDiv.classList.add('show');
+            return;
+        }
+        
+        // Disable submit button
+        const submitBtn = form.querySelector('.btn-submit');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Lähetetään...';
+        
+        try {
+            // Submit to Flask backend which will create Zoho ticket
+            const response = await fetch('/api/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
                     name,
                     email,
                     phone,
-                    organization
-                },
-                correctPercentage: percentage,
-                solutionWord: SOLUTION_COORDS.map(coord => 
-                    userAnswers[`${coord.x},${coord.y}`] || ' '
-                ).join(''),
-                submissionTime: new Date().toISOString()
-            };
-
-            try {
-                const response = await fetch('https://hook.eu1.make.com/j6i1llfwbqy4euobx94y2e22gy1wjlau', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(submissionData)
-                });
-
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    organization: formData.get('organization').trim(),
+                    timestamp: new Date().toISOString(),
+                    puzzleCompleted: true
+                })
+            });
+            
+            if (response.ok) {
+                showSuccessModal();
+            } else {
+                const errorData = await response.json();
+                if (response.status === 429) {
+                    throw new Error(errorData.error || 'Voit lähettää vastauksen vain kerran päivässä.');
+                } else {
+                    throw new Error('Submission failed');
                 }
-
-                // Close modal
-                document.body.removeChild(modal);
-                document.body.removeChild(overlay);
-                
-                alert('Kiitos vastauksesta. Menestyksekästä vuotta 2025!');
-            } catch (error) {
-                alert('Virhe vastauksen lähetyksessä. Yritä uudelleen.');
             }
-        };
-    });
+        } catch (error) {
+            errorDiv.textContent = error.message || 'Virhe lähetettäessä. Yritä myöhemmin uudelleen.';
+            errorDiv.classList.add('show');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Lähetä';
+        }
+    }
+
+    function showSuccessModal() {
+        const modal = createModal();
+        
+        modal.querySelector('.modal-content').innerHTML = `
+            <div class="modal-header">
+                <h2>Kiitos vastauksestasi!</h2>
+                <p>Olet mukana arvonnassa</p>
+            </div>
+            <div class="success-message show">
+                Vastauksesi on lähetetty onnistuneesti.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-submit" onclick="closeModal()">Sulje</button>
+            </div>
+        `;
+        
+        showModal();
+    }
+
+    // Make closeModal globally available
+    window.closeModal = closeModal;
 
     document.getElementById('instructions-button').addEventListener('click', () => {
         alert(

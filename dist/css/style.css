@@ -1,265 +1,446 @@
 :root {
-    /* Base dimensions */
-    --puzzle-width: min(100%, 1089px);
-    
-    /* Grid dimensions */
-    --grid-height: calc(var(--puzzle-width) * 1.017);
+  /* Base dimensions */
+  --puzzle-width: min(100%, 1089px);
+
+  /* Grid dimensions */
+  --grid-height: calc(var(--puzzle-width) * 1.017);
 }
 
 body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 20px;
-    background-color: #f8f9fa;
+  font-family: "Arial", sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f8f9fa;
 }
 
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 .invisible {
-    visibility: hidden;
-    height: 0;
-    margin: 0;
-    padding: 0;
+  visibility: hidden;
+  height: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .puzzle-container {
-    position: relative;
-    width: 100%;
-    max-width: 1089px;
-    margin: 0 auto;
+  position: relative;
+  width: 100%;
+  max-width: 1089px;
+  margin: 0 auto;
 }
 
 .puzzle-wrapper {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 1089/1846;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1089/1846;
 }
 
 .puzzle-image {
-    width: 100%;
-    height: auto;
-    display: block;
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 #crossword-grid {
-    position: absolute;
-    bottom: 0;
-    left: 16.67%;  /* 2/12 of width */
-    width: 83.33%;  /* 10/12 of width */
-    height: var(--grid-height);
-    pointer-events: all;
-    z-index: 50;  /* Ensure grid is above the background image */
+  position: absolute;
+  bottom: 0;
+  left: 16.67%; /* 2/12 of width */
+  width: 83.33%; /* 10/12 of width */
+  height: var(--grid-height);
+  pointer-events: all;
+  z-index: 50; /* Ensure grid is above the background image */
 }
 
 .cell {
-    position: absolute;
-    width: 10%;  /* 1/10 of grid width */
-    height: 8.33%;  /* 1/12 of grid height */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: all;
+  position: absolute;
+  width: 10%; /* 1/10 of grid width */
+  height: 8.33%; /* 1/12 of grid height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: all;
 }
 
 /* Cell input styling (consolidated) */
 .cell input {
-    width: 90%;
-    height: 90%;
-    border: none;
-    text-align: center;
-    background-color: transparent;
-    color: #000000;
-    text-shadow: none;
-    font-weight: bold;
-    font-size: clamp(12px, 2.5vw, 24px);  /* More reliable responsive font size */
-    min-height: 12px;
-    pointer-events: all;
-    position: relative;
-    z-index: 100;
-    padding: 0;
-    margin: 0;
-    -webkit-text-fill-color: #000000;  /* Force black text on iOS/Safari */
+  width: 90%;
+  height: 90%;
+  border: none;
+  text-align: center;
+  background-color: transparent;
+  color: #000000;
+  text-shadow: none;
+  font-weight: bold;
+  font-size: clamp(12px, 2.5vw, 24px); /* More reliable responsive font size */
+  min-height: 12px;
+  pointer-events: all;
+  position: relative;
+  z-index: 100;
+  padding: 0;
+  margin: 0;
+  -webkit-text-fill-color: #000000; /* Force black text on iOS/Safari */
 }
 
 .cell input:focus {
-    outline: 2px solid rgba(0, 123, 255, 0.6);
-    outline-offset: -2px;
-    background-color: rgba(255, 255, 255, 0.3);
+  outline: 2px solid rgba(0, 123, 255, 0.6);
+  outline-offset: -2px;
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 .cell.selected {
-    border: 2px solid rgba(0, 123, 255, 0.4);
-    background: rgba(173, 216, 230, 0.4);  /* light blue with 40% opacity */
-    z-index: 200;  /* Bring selected cell to top */
+  border: 2px solid rgba(0, 123, 255, 0.4);
+  background: rgba(173, 216, 230, 0.4); /* light blue with 40% opacity */
+  z-index: 200; /* Bring selected cell to top */
 }
 
 .cell.blocked {
-    pointer-events: none;
+  pointer-events: none;
 }
 
 .cell.word-highlight {
-    background-color: rgba(0, 123, 255, 0.1);
-    z-index: 150;  /* Bring highlighted word cells above others */
+  background-color: rgba(0, 123, 255, 0.1);
+  z-index: 150; /* Bring highlighted word cells above others */
 }
 
 .cell.correct {
-    color: #228B22;
+  color: #228b22;
 }
 
 .cell.incorrect {
-    color: red;
+  color: red;
 }
 
 /* Responsive styles */
 @media (max-width: 1200px) {
-    .controls {
-        width: 90%;
-        max-width: 83.33%;  /* 10/12 of width */
-    }
+  .controls {
+    width: 90%;
+    max-width: 83.33%; /* 10/12 of width */
+  }
 }
 
 @media (max-width: 768px) {
-    .controls {
-        padding: 12px;
-        gap: 8px;
-    }
+  .controls {
+    padding: 12px;
+    gap: 8px;
+  }
 
-    .controls button {
-        min-width: 120px;
-        font-size: 14px;
-        padding: 10px 12px;
-    }
+  .controls button {
+    min-width: 120px;
+    font-size: 14px;
+    padding: 10px 12px;
+  }
 }
 
 @media (max-width: 480px) {
-    .controls {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        width: 80%;
-        gap: 8px;
-    }
-    
-    .controls button {
-        min-width: unset;
-        width: 100%;
-        font-size: 13px;
-        padding: 8px 10px;
-    }
-    
-    /* Last button spans full width if odd number of buttons */
-    .controls button:last-child:nth-child(odd) {
-        grid-column: 1 / -1;
-    }
+  .controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 80%;
+    gap: 8px;
+  }
+
+  .controls button {
+    min-width: unset;
+    width: 100%;
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+
+  /* Last button spans full width if odd number of buttons */
+  .controls button:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
 }
 
 h1 {
-    color: #000;
-    text-align: center;
-    margin-bottom: 30px;
+  color: #000;
+  text-align: center;
+  margin-bottom: 30px;
 }
 
 .controls {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 83.33%;  /* 10/12 of width */
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    z-index: 10;
-    flex-wrap: wrap;
+  position: relative;
+  top: unset;
+  left: unset;
+  transform: none;
+  width: 83.33%; /* 10/12 of width */
+  margin: 0 auto 20px auto; /* Center and add space below */
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  flex-wrap: wrap;
 }
 
 .controls button {
-    flex: 1;
-    min-width: 150px;
-    padding: 12px 15px;
-    font-size: 16px;
-    white-space: nowrap;
-    background-color: #c41e3a; /* Christmas red */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  min-width: 150px;
+  padding: 12px 15px;
+  font-size: 16px;
+  white-space: nowrap;
+  background-color: #c41e3a; /* Christmas red */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .controls button:hover {
-    background-color: #a01830;
-    transform: translateY(-1px);
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  background-color: #a01830;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
 }
 
-#check-button, #check-solution-button {
-    background-color: #146B3A; /* Christmas green */
+#check-button,
+#check-solution-button {
+  background-color: #146b3a; /* Christmas green */
 }
 
-#check-button:hover, #check-solution-button:hover {
-    background-color: #0f5028; /* Darker Christmas green */
+#check-button:hover,
+#check-solution-button:hover {
+  background-color: #0f5028; /* Darker Christmas green */
 }
 
 #instructions-button {
-    background-color: #165B33; /* Different shade of Christmas green */
+  background-color: #165b33; /* Different shade of Christmas green */
 }
 
 #instructions-button:hover {
-    background-color: #114426; /* Darker shade */
+  background-color: #114426; /* Darker shade */
 }
 
 .controls button:disabled {
-    background-color: #d9d9d9;
-    color: #999;
-    cursor: not-allowed;
-    box-shadow: none;
-    transform: none;
+  background-color: #d9d9d9;
+  color: #999;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }
 
 /* Zoom controls */
 .zoom-controls {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 5px 10px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
 }
 
 .zoom-controls button {
-    width: 32px;
-    height: 32px;
-    min-width: 32px;
-    flex: 0 0 auto;
-    padding: 0;
-    font-size: 20px;
-    font-weight: bold;
-    line-height: 1;
-    background-color: #165B33;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  flex: 0 0 auto;
+  padding: 0;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1;
+  background-color: #165b33;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .zoom-controls button:hover {
-    background-color: #114426;
+  background-color: #114426;
 }
 
 #zoom-level {
-    min-width: 45px;
-    text-align: center;
-    font-size: 14px;
-    font-weight: bold;
-    color: #333;
+  min-width: 45px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .modal-content {
+  transform: translateY(0);
+}
+
+.modal-header {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: #1a1a1a;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.modal-header p {
+  margin: 8px 0 0 0;
+  color: #666;
+  font-size: 16px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e1e5e9;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #146B3A;
+  box-shadow: 0 0 0 3px rgba(20, 107, 58, 0.1);
+}
+
+.form-group input:invalid {
+  border-color: #dc3545;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.modal-footer button {
+  flex: 1;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancel {
+  background: #f8f9fa;
+  color: #495057;
+}
+
+.btn-cancel:hover {
+  background: #e9ecef;
+}
+
+.btn-submit {
+  background: #146B3A;
+  color: white;
+}
+
+.btn-submit:hover {
+  background: #125232;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(20, 107, 58, 0.3);
+}
+
+.btn-submit:disabled {
+  background: #d9d9d9;
+  color: #999;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.error-message {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  display: none;
+}
+
+.error-message.show {
+  display: block;
+}
+
+.success-message {
+  background: #d4edda;
+  color: #155724;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  display: none;
+}
+
+.success-message.show {
+  display: block;
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 24px;
+    margin: 20px;
+  }
+  
+  .modal-header h2 {
+    font-size: 20px;
+  }
+  
+  .modal-footer {
+    flex-direction: column;
+  }
 }

@@ -1,41 +1,50 @@
 <!DOCTYPE html>
 <html lang="fi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <title>Seemoto Jouluristikko 2024</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=2024.1224.0116">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Seemoto Jouluristikko 2025</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}?v=2024.1224.0116"
+    />
+  </head>
+  <body>
     <div class="container">
-        <h1 class="invisible">Seemoto Jouluristikko 2024</h1>
-        
-        <div class="puzzle-container">
-            <div class="puzzle-wrapper">
-                <div class="controls" role="toolbar" aria-label="Ristikon toiminnot">
-                    <button type="button" id="instructions-button" aria-label="Näytä ohjeet">Ohjeet</button>
-                    <button type="button" id="check-button" aria-label="Tarkista ristikon vastaukset">Tarkista ristikko</button>
-                    <button type="button" id="check-solution-button" aria-label="Tarkista ratkaisusana">Tarkista ratkaisusana</button>
-                    <button type="button" id="clear-button" aria-label="Tyhjennä kaikki vastaukset">Tyhjennä ristikko</button>
-                    <button type="button" id="submit-button" aria-label="Lähetä vastaus arvontaan">Lähetä vastaus</button>
-                    <div class="zoom-controls">
-                        <button type="button" id="zoom-out-button" aria-label="Pienennä">−</button>
-                        <span id="zoom-level">100%</span>
-                        <button type="button" id="zoom-in-button" aria-label="Suurenna">+</button>
-                    </div>
-                </div>
-                
-                <img src="{{ url_for('serve_image', filename='image.jpg') }}?v=2024" alt="Puzzle Background" class="puzzle-image">
-                <div id="crossword-grid" class="crossword-grid">
-                    <!-- Grid will be populated by JavaScript -->
-                </div>
-            </div>
+      <h1 class="invisible">Seemoto Jouluristikko 2025</h1>
+
+      <div class="puzzle-container">
+        <div class="controls" role="toolbar" aria-label="Ristikon toiminnot">
+          <button type="button" id="instructions-button" aria-label="Näytä ohjeet">Ohjeet</button>
+          <button type="button" id="check-button" aria-label="Tarkista ristikon vastaukset">Tarkista ristikko</button>
+          <button type="button" id="clear-button" aria-label="Tyhjennä kaikki vastaukset">Tyhjennä ristikko</button>
+          <button type="button" id="submit-button" aria-label="Lähetä vastaus arvontaan">Lähetä vastaus</button>
+          <div class="zoom-controls">
+            <button type="button" id="zoom-out-button" aria-label="Pienennä">−</button>
+            <span id="zoom-level">100%</span>
+            <button type="button" id="zoom-in-button" aria-label="Suurenna">+</button>
+          </div>
         </div>
+
+        <div class="puzzle-wrapper">
+          <img
+            src="{{ url_for('serve_image', filename='image.jpg') }}?v=2024"
+            alt="Puzzle Background"
+            class="puzzle-image"
+          />
+          <div id="crossword-grid" class="crossword-grid">
+            <!-- Grid will be populated by JavaScript -->
+          </div>
+        </div>
+      </div>
     </div>
 
     <script src="{{ url_for('static', filename='js/main.js') }}?v=2024"></script>
-</body>
+  </body>
 </html>
