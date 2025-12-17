@@ -41,7 +41,7 @@ body {
 
 .puzzle-image {
   width: 100%;
-  height: auto;
+  height: 100%;
   display: block;
 }
 
@@ -50,9 +50,9 @@ body {
   bottom: 0;
   left: 16.67%; /* 2/12 of width */
   width: 83.33%; /* 10/12 of width */
-  height: var(--grid-height);
+  height: 60%; /* Grid area height as percentage of image */
   pointer-events: all;
-  z-index: 50; /* Ensure grid is above the background image */
+  z-index: 50;
 }
 
 .cell {
@@ -62,6 +62,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
   pointer-events: all;
 }
 

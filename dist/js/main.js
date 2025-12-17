@@ -453,15 +453,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showErrorModal(message) {
         const modal = createModal();
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error-message show';
-        errorDiv.textContent = message;
         
-        modal.querySelector('.modal-header').after(errorDiv);
-        
-        const footer = modal.querySelector('.modal-footer');
-        footer.innerHTML = `
-            <button type="button" class="btn-cancel" onclick="closeModal()">Sulje</button>
+        modal.querySelector('.modal-content').innerHTML = `
+            <div class="modal-header">
+                <h2>Virhe</h2>
+            </div>
+            <div class="modal-body">
+                <div class="error-message show">${message}</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-cancel" onclick="closeModal()">Sulje</button>
+            </div>
         `;
         
         showModal();
