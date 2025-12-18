@@ -48,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
         userAnswers = {};
     }
 
-    // Fetch puzzle data
     // Check if we're on Netlify (static) or Flask (development)
     const isNetlify = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
     const puzzleUrl = isNetlify ? '/data/puzzle2024.json' : '/api/puzzle';
@@ -72,10 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 direction: word.direction.toLowerCase() // Ensure consistent case
             }));
             puzzleData = data;
-            
-            // Calculate solution coordinates after data is loaded and transformed
-            calculateSolutionCoordinates(puzzleData);
-            
             initializePuzzle();
         })
         .catch(error => {
@@ -83,49 +78,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 '<p style="color:red;padding:20px;">Virhe ristikon latauksessa. Lataa sivu uudelleen.</p>';
         });
 
-    // Dynamic solution coordinates and word
-    let SOLUTION_COORDS = [];
-    let SOLUTION_WORD = '';
-    
-    // Calculate solution coordinates from the word marked as ratkaisusana
-    function calculateSolutionCoordinates(puzzleData) {
-        if (!puzzleData || !puzzleData.words) {
-            SOLUTION_COORDS = [];
-            SOLUTION_WORD = '';
-            return;
-        }
-        
-        // Find the word marked as ratkaisusana
-        const solutionWordObj = puzzleData.words.find(word => word.ratkaisusana === true);
-        if (!solutionWordObj) {
-            SOLUTION_COORDS = [];
-            SOLUTION_WORD = '';
-            return;
-        }
-        
-        // Calculate coordinates for each letter in the solution word
-        SOLUTION_WORD = solutionWordObj.answer;
-        SOLUTION_COORDS = [];
-        
-        for (let i = 0; i < solutionWordObj.length; i++) {
-            let x = solutionWordObj.startX;
-            let y = solutionWordObj.startY;
-            
-            // Adjust position based on direction
-            if (solutionWordObj.direction === 'down') {
-                y = solutionWordObj.startY + i; // Going down in original coordinates (after transform)
-            } else {
-                x = solutionWordObj.startX + i; // Going across
-            }
-            
-            SOLUTION_COORDS.push({ x, y });
-        }
-    }
-    
-    // Get the solution word (for backward compatibility)
-    function getSolutionWord() {
-        return SOLUTION_WORD;
-    }
+    // Solution word coordinates (obfuscated for security)
+    const SOLUTION_COORDS = [
+        {x: 7, y: 0},
+        {x: 3, y: 2},
+        {x: 8, y: 2},
+        {x: 4, y: 5},
+        {x: 6, y: 6},
+        {x: 0, y: 8},
+        {x: 9, y: 11}
+    ];
+    // Obfuscated solution (base64 encoded, reversed)
+    const _s = atob('SVBQQU5JUw==').split('').reverse().join('');
 
     function initializePuzzle() {
         const grid = document.getElementById('crossword-grid');
@@ -400,14 +364,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const percentage = Math.round((correctCount / totalCells) * 100);
         const solutionWordCorrect = checkSolutionWord();
+        const overallCorrect = checkOverallCorrectness();
 
-        // Enable submit button if solution is correct
-        submitButton.disabled = !solutionWordCorrect;
+        // Enable submit button if solution is correct AND at least 50% overall
+        submitButton.disabled = !(solutionWordCorrect && overallCorrect);
 
         // Show answer
         alert(
             `Ratkaisusana on ${solutionWordCorrect ? 'oikein' : 'väärin'}.\n` +
-            `Ristikko on ${percentage} % oikein.`
+            `Ristikko on ${percentage} % oikein.\n` +
+            `${overallCorrect ? 'Vähintään 50% on oikein - voit lähettää vastauksen!' : 'Tarvitset vähintään 50% oikein vastauksia lähettääksesi.'}`
         );
     });
 
@@ -435,15 +401,39 @@ document.addEventListener('DOMContentLoaded', () => {
             return userAnswers[`${coord.x},${coord.y}`] || '';
         }).join('');
         
-        // Get solution word from the words array
-        const solutionWord = getSolutionWord();
+        // Get solution word from obfuscated string
+        const solutionWord = _s;
         return letters.toUpperCase() === solutionWord.toUpperCase();
+    }
+    
+    function checkOverallCorrectness() {
+        // Calculate percentage of correct letters
+        let correctCount = 0;
+        const totalCells = getTotalCells();
+
+        puzzleData.cells.forEach(cell => {
+            if (!cell.isBlocked && cell.letter.trim() !== '') {
+                const userAnswer = userAnswers[`${cell.x},${cell.y}`]?.toUpperCase() || '';
+                if (userAnswer === cell.letter.toUpperCase()) {
+                    correctCount++;
+                }
+            }
+        });
+
+        const percentage = (correctCount / totalCells) * 100;
+        return percentage >= 50; // Return true if at least 50% correct
     }
 
     document.getElementById('submit-button').addEventListener('click', () => {
         // Check if solution word is correct
         if (!checkSolutionWord()) {
             showErrorModal('Ratkaisusana on väärin, tarkista ristikko');
+            return;
+        }
+        
+        // Check if at least 50% is correct
+        if (!checkOverallCorrectness()) {
+            showErrorModal('Ristikon täytöstä on oltava vähintään 50% oikein');
             return;
         }
 
